@@ -1,9 +1,8 @@
 import React from 'react'
-import { AppBar, Button, Container, createStyles, IconButton, makeStyles, ThemeProvider, Toolbar, Typography } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import { AppBar, Button, createStyles, makeStyles, ThemeProvider, Toolbar } from '@material-ui/core'
 import { Theme } from '@material-ui/core';
 import { theme } from '../App';
-import { SimpleMenu } from './Menu';
+import { CategoryMenu }  from './Menu';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -25,7 +24,7 @@ export const TopBar = () => {
 		<ThemeProvider theme={theme}>
 			<AppBar position="sticky">
 				<Toolbar className={classes.toolbar}>
-					<SimpleMenu />
+					<CategoryMenu />
 					<Button color="inherit">Login</Button>
         		</Toolbar>
       		</AppBar>

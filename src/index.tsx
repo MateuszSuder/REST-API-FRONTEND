@@ -7,13 +7,11 @@ import { StateProvider } from './context/context';
 import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
-	<React.StrictMode>
     <StateProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </StateProvider>
-  </React.StrictMode>,
+    </StateProvider>,
   document.getElementById('root')
 );
 
