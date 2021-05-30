@@ -16,5 +16,5 @@ export default async function makeRequest(request: requestType, path: string, bo
 		body: body
 	})
 
-	return r.json();
+	return r;
 }
