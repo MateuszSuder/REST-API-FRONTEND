@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { getCategories } from '../services/categoryService';
+import { categories, getCategories } from '../../services/categoryService';
 
 const StyledMenu = withStyles({
   paper: {
@@ -42,7 +42,7 @@ const StyledMenuIcon = withStyles((theme) => ({
 
 export const CategoryMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [cat, setCat] = useState<any>();
+  const [cat, setCat] = useState<categories[]>();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -57,10 +57,6 @@ export const CategoryMenu = () => {
 		setCat(res);
 	})
   }, [])
-
-  useEffect(() => {
-	console.log(cat);
-  }, [cat])
 
   return (
     <div>
@@ -82,7 +78,7 @@ export const CategoryMenu = () => {
         onClose={handleClose}
       >
 		{ cat &&
-		  cat.map((el: {categoryName: string}) => {
+		  cat.map(el => {
 			return (
 				<StyledMenuItem key={el.categoryName}>
 					<ListItemText primary={el.categoryName} />

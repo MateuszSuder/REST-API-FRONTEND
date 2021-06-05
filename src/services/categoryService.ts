@@ -1,7 +1,11 @@
 import makeRequest, { requestType } from "./fetcher";
 
-export async function getCategories() {
+
+export type categories = {
+	categoryName: string
+}
+
+export async function getCategories(): Promise<categories[]> {
 	let res = await makeRequest(requestType.GET, "api/category") ;
-	res = await res.json();
-	return res;
+	return res.json();
 }
