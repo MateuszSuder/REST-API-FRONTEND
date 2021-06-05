@@ -61,8 +61,17 @@ export interface Status {
     status: string;
 }
 
+export interface UserInfo {
+	numberOfUsers: number
+}
+
 
 export async function getUsers(): Promise<User[]>{
 	let res = await makeRequest(requestType.GET, "api/user") ;
+	return res.json();
+}
+
+export async function getUsersInfo(): Promise<UserInfo>{
+	let res = await makeRequest(requestType.GET, "api/user/info") ;
 	return res.json();
 }
