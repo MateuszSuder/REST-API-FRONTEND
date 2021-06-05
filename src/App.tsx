@@ -4,9 +4,9 @@ import './App.css';
 import { TopBar } from './components/Header/TopBar';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Login } from './components/Account/Login';
-import { Admin } from './components/Admin/Admin';
-import { AccountCreation } from './components/Account/AccountCreation';
+import { Login } from './views/Login/Login';
+import { Admin } from './views/Admin/Admin';
+import { AccountCreation } from './views/Register/AccountCreation';
 import { useRootStore } from './context/context';
 import { RootStore } from './stores/RootStore';
 
