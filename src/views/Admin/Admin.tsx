@@ -1,6 +1,6 @@
 import { Container, createStyles, Grid, makeStyles, Paper, Theme, ThemeProvider, Typography, withStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
-import { Link, useHistory } from 'react-router-dom';
+import { Link, Route, Switch, useHistory } from 'react-router-dom';
 import { theme } from '../../App';
 import { useRootStore } from '../../context/context';
 import PeopleIcon from '@material-ui/icons/People';
@@ -10,7 +10,8 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import { getUsersInfo } from '../../services/userService';
 import { getCompaniesInfo } from '../../services/companySevice';
 import { getProductsInfo, ProductsInfo } from '../../services/productService';
-import { OrdersInfo } from '../../services/orderService';
+import { getOrdersInfo, OrdersInfo } from '../../services/orderService';
+import { AdminList } from './AdminList';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -37,10 +38,10 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		link: {
 			textDecoration: "none",
-			color: theme.palette.primary.light,
+			color: theme.palette.primary.dark,
 			"&:visited": {
 				textDecoration: "none",
-				color: theme.palette.primary.light
+				color: theme.palette.primary.dark
 			}
 		},
 		info: {
@@ -104,7 +105,7 @@ export const Admin = () => {
 			path: "/admin/orders",
 			info: [
 				{
-					key: "Zamówienia czekające na zatwierdzenia płatności",
+					key: "Zamówienia oczekujące na zatwierdzenia płatności",
 					value: ordersInfo.waitingForPayment
 				},
 				{
@@ -139,50 +140,60 @@ export const Admin = () => {
 			getProductsInfo(productAmountCheck).then(res => {
 				setProductsInfo(res)
 			});
+			getOrdersInfo().then(res => {
+				setOrdersInfo(res)
+			})
 		}
 	}, [])
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Container>
-				<Grid container spacing={3} className={classes.g}>
-					{
-						fields.map(el => 
+			<Switch>
+				<Route path="/admin/*">
+					<AdminList />
+				</Route>
+				<Route path="/">
+					<Container>
+						<Grid container spacing={3} className={classes.g}>
 							{
-								return(
-									<Grid item xs={12}>
-										<Paper className={classes.paper}>
-											<Grid container spacing={3}>
-												<Grid item xs={8} container>
-													<Typography className={classes.title}>{el.title}</Typography>
-													{
-														el.icon
-													}
-												</Grid>
-												<Grid item xs={8}>
-													{
-														el.info && el.info.map(info => {
-															return (
-																<Typography className={classes.info}>
-																	{
-																		info.key + ": " + info.value
-																	}
-																</Typography>
-															)
-														})
-													}
-												</Grid>
+								fields.map((el, i) => 
+									{
+										return(
+											<Grid item xs={12} key={i}>
+												<Paper className={classes.paper}>
+													<Grid container spacing={3}>
+														<Grid item xs={8} container>
+															<Typography className={classes.title}>{el.title}</Typography>
+															{
+																el.icon
+															}
+														</Grid>
+														<Grid item xs={8}>
+															{
+																el.info && el.info.map((info, i) => {
+																	return (
+																		<Typography className={classes.info} key={i}>
+																			{
+																				info.key + ": " + info.value
+																			}
+																		</Typography>
+																	)
+																})
+															}
+														</Grid>
+													</Grid>
+													<Typography className={classes.manage}>
+														<Link to={el.path} className={classes.link}>Zarządzaj...</Link>
+													</Typography>
+												</Paper>
 											</Grid>
-											<Typography className={classes.manage}>
-												<Link to={el.path} className={classes.link}>Zarządzaj...</Link>
-											</Typography>
-										</Paper>
-									</Grid>
-								)
-							})
-					}
-				</Grid>
-			</Container>
+										)
+									})
+							}
+						</Grid>
+					</Container>
+				</Route>
+			</Switch>
 		</ThemeProvider>
 	)
 }

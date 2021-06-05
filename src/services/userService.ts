@@ -66,6 +66,14 @@ export interface UserInfo {
 }
 
 
+export interface UserMinified {
+    companyName: string;
+    id:          string;
+    permission:  "user" | "admin";
+    username:    string;
+}
+
+
 export async function getUsers(): Promise<User[]>{
 	let res = await makeRequest(requestType.GET, "api/user") ;
 	return res.json();
@@ -73,5 +81,10 @@ export async function getUsers(): Promise<User[]>{
 
 export async function getUsersInfo(): Promise<UserInfo>{
 	let res = await makeRequest(requestType.GET, "api/user/info") ;
+	return res.json();
+}
+
+export async function getUsersMinified(): Promise<UserMinified[]>{
+	let res = await makeRequest(requestType.GET, "api/user/v2") ;
 	return res.json();
 }
