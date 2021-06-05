@@ -1,5 +1,4 @@
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, FormControlLabel, Checkbox, Button, Box, makeStyles } from '@material-ui/core';
-import { Copyright } from '@material-ui/icons';
+import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, makeStyles } from '@material-ui/core';
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
