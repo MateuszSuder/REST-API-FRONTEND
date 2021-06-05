@@ -48,10 +48,18 @@ const StyledMenu = withStyles({
 export const UserMenu = () => {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLDivElement>(null);
 
+
 	const open = Boolean(anchorEl);
 	const id = open ? 'spring-popper' : undefined;
 
-	const userStore = useRootStore().user;
+	const rootStore = useRootStore();
+	const userStore = rootStore.user;
+
+	const logout = () => {
+		userStore.logout();
+	}
+
+
 
 	const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
 		setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -63,7 +71,7 @@ export const UserMenu = () => {
 
 	return (
 		<div>
-			<Container onClick={handleClick} style={{cursor: "pointer"}}>
+			<Container onMouseOver={handleClick} style={{cursor: "pointer"}}>
 				<AccountCircleRoundedIcon htmlColor="white" />
 				<Typography>
 					{
@@ -80,23 +88,31 @@ export const UserMenu = () => {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				{
-					userStore.user && userStore.user.permission === 'admin' &&
-					<Link to="/admin" style={linkStyle}>
+				<div onMouseLeave={handleClose}>
+					{
+						userStore.user && userStore.user.permission === 'admin' &&
+						<Link to="/admin" style={linkStyle}>
+							<StyledMenuItem>
+								<ListItemText primary="Admin" />
+							</StyledMenuItem>
+						</Link>
+					}
+					<Link to="/" style={linkStyle}>
 						<StyledMenuItem>
-							<ListItemText primary="Admin" />
+							<ListItemText primary="Konto" />
 						</StyledMenuItem>
 					</Link>
-				}
-				<StyledMenuItem>
-					<ListItemText primary="Konto" />
-				</StyledMenuItem>
-				<StyledMenuItem>
-					<ListItemText primary="Zamówienia" />
-				</StyledMenuItem>
-				<StyledMenuItem>
-					<ListItemText primary="Wyloguj" />
-				</StyledMenuItem>
+					<Link to="/" style={linkStyle}>
+						<StyledMenuItem>
+							<ListItemText primary="Zamówienia" />
+						</StyledMenuItem>
+					</Link>
+					<Link to="/" onClick={logout} style={linkStyle}>
+						<StyledMenuItem>
+							<ListItemText primary="Wyloguj" />
+						</StyledMenuItem>
+					</Link>
+				</div>
 			</StyledMenu>
 		</div>
 	)

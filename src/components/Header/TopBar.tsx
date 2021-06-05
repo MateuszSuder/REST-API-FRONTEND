@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { FC, useEffect } from 'react'
 import { AppBar, Button, Container, createStyles, makeStyles, ThemeProvider, Toolbar } from '@material-ui/core'
 import { Theme } from '@material-ui/core';
-import { theme } from '../../App';
+import { props, theme } from '../../App';
 import { CategoryMenu }  from './Menu';
 import { Link } from "react-router-dom"
-import { useRootStore } from '../../context/context';
 import { UserMenu } from './UserMenu';
 import { CartMenu } from './CartMenu';
-
+import { observer } from 'mobx-react';
+import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,33 +33,29 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export const TopBar = () => {
+export const TopBar: IReactComponent = observer(({store}: props) => {
 	const classes = useStyles();
-
-	const userStore = useRootStore().user;
 
 	return (
 		<ThemeProvider theme={theme}>
 			<AppBar position="sticky">
 				<Toolbar className={classes.toolbar}>
 					<CategoryMenu />
-					<div className={classes.row}>
-						{
-							!userStore.userLogged &&
-							<Button color="inherit" component={Link} to="/login" style={{marginRight: 0}}>Login</Button>
-						}
-						{
-							userStore.userLogged &&
-							<div className={classes.rowChildren}>
-								<UserMenu />
-								<CartMenu />
-							</div>
-						}
-					</div>
-
-
-        		</Toolbar>
-      		</AppBar>
+						<div className={classes.row}>
+							{
+								!store.user.userLogged &&
+								<Button color="inherit" component={Link} to="/login" style={{marginRight: 0}}>Login</Button>
+							}
+							{
+								store.user.userLogged &&
+								<div className={classes.rowChildren}>
+									<UserMenu />
+									<CartMenu />
+								</div>
+							}
+						</div>
+				</Toolbar>
+			</AppBar>
 		</ThemeProvider>
 	)
-}
+})

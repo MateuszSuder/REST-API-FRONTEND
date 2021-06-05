@@ -1,4 +1,4 @@
-import { Observer } from 'mobx-react';
+import { observer, Observer } from 'mobx-react';
 import React from 'react';
 import './App.css';
 import { TopBar } from './components/Header/TopBar';
@@ -7,6 +7,12 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Login } from './components/Account/Login';
 import { Admin } from './components/Admin/Admin';
 import { AccountCreation } from './components/Account/AccountCreation';
+import { useRootStore } from './context/context';
+import { RootStore } from './stores/RootStore';
+
+export interface props {
+	store: RootStore
+}
 
 export const theme = createMuiTheme({
 	palette: {
@@ -23,35 +29,32 @@ export const theme = createMuiTheme({
 	},
   });
 
-const App = () => {
-  return (
-    <Observer>
-      {() => (
+const App = observer(() => {
+
+	return (
 		<Router>
-				<ThemeProvider theme={theme}>
-					<Switch>
-						<Route path="/login">
-							<Login />
-						</Route>
-						<Route path="/register">
-							<AccountCreation />
-						</Route>
-						<Route path="/">
-							<div className="App">
-								<TopBar />
-								<Switch>
-									<Route path="/admin">
-										<Admin />
-									</Route>
-								</Switch>
-							</div>
-						</Route>
-					</Switch>
-				</ThemeProvider>
+			<ThemeProvider theme={theme}>
+				<Switch>
+					<Route path="/login">
+						<Login store={useRootStore()} />
+					</Route>
+					<Route path="/register">
+						<AccountCreation />
+					</Route>
+					<Route path="/">
+						<div className="App">
+							<TopBar store={useRootStore()} />
+							<Switch>
+								<Route path="/admin">
+									<Admin />
+								</Route>
+							</Switch>
+						</div>
+					</Route>
+				</Switch>
+			</ThemeProvider>
 		</Router>
-      )}
-    </Observer>
-  );
-}
+	);
+})
 
 export default App;

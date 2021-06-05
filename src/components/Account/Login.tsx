@@ -7,11 +7,11 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { theme } from '../../App';
+import { props, theme } from '../../App';
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select } from '@material-ui/core';
 import { getUsers, User } from '../../services/userService';
 import { Link, useHistory } from 'react-router-dom';
-import { useRootStore } from '../../context/context';
+import { observer } from 'mobx-react';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,14 +36,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const Login = () => {
+export const Login = observer(({store}: props) => {
 	const [users, setUsers] = useState<User[]>([]);
 	const [user, setUser] = useState<String>("");
 
 	let history = useHistory();
-	
-	const store = useRootStore()
-	const userStore = store.user;
 
 	const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		console.log(event.target.value);
@@ -76,7 +73,7 @@ export const Login = () => {
 		const u: User | undefined = users.find(el => el.id == user);
 
 		if(u) {
-			userStore.setUser(u);
+			store.user.setUser(u);
 		}
 		
 		history.push("/");
@@ -136,4 +133,4 @@ export const Login = () => {
 			</Container>
 		</ThemeProvider>
 	);
-}
+})
