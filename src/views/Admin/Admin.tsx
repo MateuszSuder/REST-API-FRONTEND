@@ -162,7 +162,7 @@ export const Admin = () => {
 											<Grid item xs={12} key={i}>
 												<Paper className={classes.paper}>
 													<Grid container spacing={3}>
-														<Grid item xs={8} container>
+														<Grid item xs={8}>
 															<Typography className={classes.title}>{el.title}</Typography>
 															{
 																el.icon

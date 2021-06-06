@@ -20,7 +20,8 @@ export const userInputs: formInputs = {
 			groupTitle: "Użytkownik",
 			items: [
 				{
-					title: "Nazwa użytkownika"
+					title: "Nazwa użytkownika",
+					disabled: true
 				},
 				{
 					title: "Prawa",
@@ -47,7 +48,7 @@ export const userInputs: formInputs = {
 			]
 		},
 		{
-			gridSize: 4,
+			gridSize: 6,
 			groupTitle: "Adres dostawy",
 			items: [
 				{

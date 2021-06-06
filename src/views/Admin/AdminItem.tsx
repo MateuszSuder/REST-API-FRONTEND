@@ -72,22 +72,7 @@ export const AdminItem: IReactComponent = observer(() => {
 	let query = useQuery();
 	let { adminType } = useParams<{adminType: string}>();
 
-	const textTransform = (s: string) => {
-		if(s.includes("user")) {
-			return "Użytkownik";
-		}
-		if(s.includes("order")) {
-			return "Zamówienie";
-		}
-		if(s.includes("compan")) {
-			return "Firma";
-		}
-		if(s.includes("product")) {
-			return "Produkt";
-		}
-		return "";
-	}
-
+	
 	useEffect(() => {
 		switch (adminType) {
 			case 'users': {
@@ -106,6 +91,26 @@ export const AdminItem: IReactComponent = observer(() => {
 		}
 		console.log(inputs);
 	}, []);
+
+	const textTransform = (s: string) => {
+		if(s.includes("user")) {
+			return "Użytkownik";
+		}
+		if(s.includes("order")) {
+			return "Zamówienie";
+		}
+		if(s.includes("compan")) {
+			return "Firma";
+		}
+		if(s.includes("product")) {
+			return "Produkt";
+		}
+		return "";
+	}
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target);
+  };
 	
 	return(
 		<ThemeProvider theme={theme}>
@@ -150,7 +155,15 @@ export const AdminItem: IReactComponent = observer(() => {
 														el.items.map((item: formItem, i: number, ar) => {
 															return (
 																<Grid item xs={el.gridSize} key={i}>
-																	<TextField required={item.required} disabled={item.disabled} id={item.title} label={item.title} select={item.type == inputType.select}  className={classes.input}>
+																	<TextField 
+																		required={item.required}
+																		disabled={item.disabled}
+																		id={item.title} label={item.title}
+																		select={item.type == inputType.select} 
+																		className={classes.input}
+																		onChange={handleChange}
+																		value={item.type == inputType.select ? item && item.values && item.values[0] : ''}
+																	>
 																		{
 																			item.values &&
 																			item.values.map((opt, i) => (
