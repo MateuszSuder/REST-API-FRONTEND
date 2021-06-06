@@ -1,4 +1,100 @@
-import makeRequest, { requestType } from "./fetcher";
+import { Company } from "./companySevice";
+import makeRequest, { formInputs, inputType, requestType } from "./fetcher";
+import { Product } from "./productService";
+
+export const userInputs: formInputs = {
+	create: [
+		{
+			gridSize: 12,
+			items: [
+				{
+					title: "Nazwa użytkownika",
+					required: true,
+				}
+			]
+		}
+	],
+	modify: [
+		{
+			gridSize: 6,
+			groupTitle: "Użytkownik",
+			items: [
+				{
+					title: "Nazwa użytkownika"
+				},
+				{
+					title: "Prawa",
+					type: inputType.select,
+					values: [
+						'Użytkownik',
+						'Admin'
+					]
+				}
+			]
+		},
+		{
+			gridSize: 6,
+			groupTitle: "Firma",
+			items: [
+				{
+					title: "ID firmy",
+					disabled: true
+				},
+				{
+					title: "Nazwa Firmy",
+					type: inputType.select
+				}
+			]
+		},
+		{
+			gridSize: 4,
+			groupTitle: "Adres dostawy",
+			items: [
+				{
+					title: "Imie"
+				},
+				{
+					title: "Nazwisko"
+				},
+				{
+					title: "Państwo"
+				},
+				{
+					title: "Miasto"
+				},
+				{
+					title: "Kod pocztowy"
+				},
+				{
+					title: "Ulica"
+				},
+				{
+					title: "Numer domu"
+				}
+			]
+		},
+		{
+			gridSize: 6,
+			groupTitle: "Zamówienia",
+			items: [
+				{
+					title: "Numer zamówienia",
+					disabled: true
+				},
+				{
+					title: "Status zamówienia",
+					type: inputType.select,
+					values: [
+						"Ordered",
+						"PaymentDone",
+						"Shipped",
+						"Delivered"
+					]
+				}
+			]	
+		}
+	]
+}
 
 export interface User {
     company:        Company;
@@ -7,11 +103,6 @@ export interface User {
     orders:         Order[];
     permission:     string;
     username:       string;
-}
-
-export interface Company {
-    id:   string;
-    name: string;
 }
 
 export interface Delivery {
@@ -40,15 +131,6 @@ export interface Order {
 export interface Item {
     product:  Product;
     quantity: number;
-}
-
-export interface Product {
-    amount:        number;
-    description:   string;
-    id:            string;
-    name:          string;
-    price:         number;
-    specification: Specification[];
 }
 
 export interface Specification {

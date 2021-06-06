@@ -23,30 +23,30 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'left',
       color: theme.palette.text.primary,
     },
-		g: {
-			marginTop: theme.spacing(2),
-		},
-		manage: {
-			color: theme.palette.primary.light,
-			fontSize: "0.8rem",
-			textAlign: "right",
-			textDecoration: "none"
-		},
-		title: {
-			marginRight: theme.spacing(1),
-			fontSize: "1.2rem"
-		},
-		link: {
+	g: {
+		marginTop: theme.spacing(2),
+	},
+	manage: {
+		color: theme.palette.primary.light,
+		fontSize: "0.8rem",
+		textAlign: "right",
+		textDecoration: "none"
+	},
+	title: {
+		marginRight: theme.spacing(1),
+		fontSize: "1.2rem"
+	},
+	link: {
+		textDecoration: "none",
+		color: theme.palette.primary.dark,
+		"&:visited": {
 			textDecoration: "none",
-			color: theme.palette.primary.dark,
-			"&:visited": {
-				textDecoration: "none",
-				color: theme.palette.primary.dark
-			}
-		},
-		info: {
-			color: theme.palette.secondary.dark
+			color: theme.palette.primary.dark
 		}
+	},
+	info: {
+		color: theme.palette.secondary.dark
+	}
   }),
 );
 

@@ -1,4 +1,4 @@
-import { Container, createStyles, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
+import { Button, Container, createStyles, Grid, Icon, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { observer } from 'mobx-react';
 import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { getProductsMinified, ProductMinified } from '../../services/productServ
 import { getUsersMinified, UserMinified } from '../../services/userService';
 import * as translation from '../../translation.json';
 import { AdminItem } from './AdminItem';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -49,7 +50,13 @@ const useStyles = makeStyles((theme: Theme) =>
 			"&:first-letter": {
 				textTransform: "capitalize"
 			}
-		}
+		},
+    buttonContainer: {
+      margin: theme.spacing(3)
+    },
+    button: {
+      cursor: "pointer"
+    }
   }),
 );
 
@@ -113,7 +120,7 @@ export const AdminList: IReactComponent = observer(() => {
 	return(
 		<>
 			<Switch>
-				<Route path="/admin/:test/*">
+				<Route path="/admin/:adminType/*">
 					<AdminItem />
 				</Route>
 				<Route path="/admin/*">
@@ -144,6 +151,11 @@ export const AdminList: IReactComponent = observer(() => {
 									)
 								})
 							}
+              <Grid container xs={12} justify="flex-end" className={classes.buttonContainer}>
+                <Link to={history.location.pathname + '/'}>
+                  <AddCircleIcon color="primary" style={{fontSize: "40px"}} className={classes.button} />
+                </Link>
+              </Grid>
 						</Grid>
 					</Container>
 				</Route>
