@@ -78,16 +78,14 @@ export const CategoryMenu = () => {
         onClose={handleClose}
       >
 		{ cat &&
-		  cat.map(el => {
-			return (
+		  cat.map(el => (
 				<StyledMenuItem key={el.categoryName}>
 					<ListItemText primary={el.categoryName} />
 					<StyledMenuIcon>
 						<ArrowForwardIosIcon fontSize="small" />
 					</StyledMenuIcon>
 				</StyledMenuItem>
-			)
-		  })
+      ))
 		}
       </StyledMenu>
     </div>

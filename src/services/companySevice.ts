@@ -12,7 +12,6 @@ export interface Company {
 
 export async function getCompanies(): Promise<Company[]>{
 	let res = await makeRequest(requestType.GET, "api/company");
-	console.log(res)
 	return res.json();
 }
 

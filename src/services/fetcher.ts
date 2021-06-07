@@ -13,6 +13,7 @@ export interface formGroup {
 
 export interface formItem {
 	title: string,
+	name: string,
 	type?: inputType, //default text
 	required?: boolean,
 	disabled?: boolean

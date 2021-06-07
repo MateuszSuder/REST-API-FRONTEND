@@ -9,6 +9,8 @@ import { Admin } from './views/Admin/Admin';
 import { AccountCreation } from './views/Register/AccountCreation';
 import { useRootStore } from './context/context';
 import { RootStore } from './stores/RootStore';
+import { AdminList } from './views/Admin/AdminList';
+import { AdminItem } from './views/Admin/AdminItem';
 
 export interface props {
 	store: RootStore
@@ -45,6 +47,12 @@ const App = observer(() => {
 						<div className="App">
 							<TopBar store={useRootStore()} />
 							<Switch>
+								<Route path="/admin/:adminType/*">
+									<AdminItem />
+								</Route>
+								<Route path="/admin/*">
+									<AdminList />
+								</Route>
 								<Route path="/admin">
 									<Admin />
 								</Route>

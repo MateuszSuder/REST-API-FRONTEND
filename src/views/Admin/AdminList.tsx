@@ -11,6 +11,7 @@ import { getUsersMinified, UserMinified } from '../../services/userService';
 import * as translation from '../../translation.json';
 import { AdminItem } from './AdminItem';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { useRootStore } from '../../context/context';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -66,6 +67,7 @@ export const AdminList: IReactComponent = observer(() => {
 	const [list, setList] = useState<Company[] | OrderMinified[] | UserMinified[] | ProductMinified[]>([{id: "0", name: ""}]);
 
 	const classes = useStyles();
+	const rootStore = useRootStore();
 	let history = useHistory();
 
 	const translate = (toTranslate: string): string => {
@@ -78,8 +80,12 @@ export const AdminList: IReactComponent = observer(() => {
 	}
 
 	useEffect(() => {
-		setListType(history.location.pathname.replace("/admin/", ""));
-		console.log(history);
+		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission != 'admin')) {
+			history.push('/');
+		} else {
+			setListType("");
+			setListType(history.location.pathname.replace("/admin/", ""));
+		}
 	}, [])
 
 	useEffect(() => {
@@ -113,53 +119,42 @@ export const AdminList: IReactComponent = observer(() => {
 		}
 	}, [listType])
 
-	useEffect(() => {
-		console.log(history);
-	}, [history])
-
 	return(
 		<>
-			<Switch>
-				<Route path="/admin/:adminType/*">
-					<AdminItem />
-				</Route>
-				<Route path="/admin/*">
-					<Container>
-						<Grid container spacing={3} className={classes.g}>
-							{
-								list && list.map((el: Company | OrderMinified | UserMinified | ProductMinified, i: number) => {
-									return (
-										<Grid item xs={12} key={i}>
-											<Paper className={classes.paper}>
-												{
-													<Typography className={classes.title}>{"ID: " + el.id}</Typography>
+			<Container>
+				<Grid container spacing={3} className={classes.g}>
+					{
+						list && list.map((el: Company | OrderMinified | UserMinified | ProductMinified, i: number) => {
+							return (
+								<Grid item xs={12} key={i}>
+									<Paper className={classes.paper}>
+										{
+											<Typography className={classes.title}>{"ID: " + el.id}</Typography>
+										}
+										{
+											Object.entries(el).map((e, i) => {
+												if(e[0] != "id" && e[0] && e[1]) {
+													return (
+														<Typography key={i} className={classes.values}>{translate(e[0]) + ": " + e[1]}</Typography>
+													)
 												}
-												{
-													Object.entries(el).map((e, i) => {
-														if(e[0] != "id" && e[0] && e[1]) {
-															return (
-																<Typography key={i} className={classes.values}>{translate(e[0]) + ": " + e[1]}</Typography>
-															)
-														}
-													})
-												}
-												<Typography className={classes.manage}>
-													<Link to={history.location.pathname + `/?id=${el.id}`} className={classes.link}>Zarządzaj...</Link>
-												</Typography>
-											</Paper>
-										</Grid>
-									)
-								})
-							}
-              <Grid container justify="flex-end" className={classes.buttonContainer}>
-                <Link to={history.location.pathname + '/'}>
-                  <AddCircleIcon color="primary" style={{fontSize: "40px"}} className={classes.button} />
-                </Link>
-              </Grid>
-						</Grid>
-					</Container>
-				</Route>
-			</Switch>
+											})
+										}
+										<Typography className={classes.manage}>
+											<Link to={history.location.pathname + `/?id=${el.id}`} className={classes.link}>Zarządzaj...</Link>
+										</Typography>
+									</Paper>
+								</Grid>
+							)
+						})
+					}
+					<Grid container justify="flex-end" className={classes.buttonContainer}>
+						<Link to={history.location.pathname + '/'}>
+							<AddCircleIcon color="primary" style={{fontSize: "40px"}} className={classes.button} />
+						</Link>
+					</Grid>
+				</Grid>
+			</Container>
 		</>
 	);
 })

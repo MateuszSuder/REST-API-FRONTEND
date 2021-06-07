@@ -148,52 +148,45 @@ export const Admin = () => {
 
 	return (
 		<ThemeProvider theme={theme}>
-			<Switch>
-				<Route path="/admin/*">
-					<AdminList />
-				</Route>
-				<Route path="/">
-					<Container>
-						<Grid container spacing={3} className={classes.g}>
+			<Container>
+				<Grid container spacing={3} className={classes.g}>
+					{
+						fields.map((el, i) => 
 							{
-								fields.map((el, i) => 
-									{
-										return(
-											<Grid item xs={12} key={i}>
-												<Paper className={classes.paper}>
-													<Grid container spacing={3}>
-														<Grid item xs={8}>
-															<Typography className={classes.title}>{el.title}</Typography>
-															{
-																el.icon
-															}
-														</Grid>
-														<Grid item xs={8}>
-															{
-																el.info && el.info.map((info, i) => {
-																	return (
-																		<Typography className={classes.info} key={i}>
-																			{
-																				info.key + ": " + info.value
-																			}
-																		</Typography>
-																	)
-																})
-															}
-														</Grid>
-													</Grid>
-													<Typography className={classes.manage}>
-														<Link to={el.path} className={classes.link}>Zarządzaj...</Link>
-													</Typography>
-												</Paper>
+								return(
+									<Grid item xs={12} key={i}>
+										<Paper className={classes.paper}>
+											<Grid container spacing={3}>
+												<Grid item xs={8}>
+													<Typography className={classes.title}>{el.title}</Typography>
+													{
+														el.icon
+													}
+												</Grid>
+												<Grid item xs={8}>
+													{
+														el.info && el.info.map((info, i) => {
+															return (
+																<Typography className={classes.info} key={i}>
+																	{
+																		info.key + ": " + info.value
+																	}
+																</Typography>
+															)
+														})
+													}
+												</Grid>
 											</Grid>
-										)
-									})
-							}
-						</Grid>
-					</Container>
-				</Route>
-			</Switch>
+											<Typography className={classes.manage}>
+												<Link to={el.path} className={classes.link}>Zarządzaj...</Link>
+											</Typography>
+										</Paper>
+									</Grid>
+								)
+							})
+					}
+				</Grid>
+			</Container>
 		</ThemeProvider>
 	)
 }

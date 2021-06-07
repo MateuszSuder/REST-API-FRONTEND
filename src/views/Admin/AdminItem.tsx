@@ -2,8 +2,9 @@ import { Container, createStyles, FormControl, Grid, Input, InputLabel, makeStyl
 import { observer } from 'mobx-react';
 import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { theme } from '../../App';
+import { useRootStore } from '../../context/context';
 import { formGroup, formInputs, formItem, inputType } from '../../services/fetcher';
 import { userInputs } from '../../services/userService';
 
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			borderBottomStyle: "solid",
 			borderBottomWidth: "1px",
 			borderBottomColor: theme.palette.primary.light,
+			marginBottom: theme.spacing(2)
 		},
 		input: {
 			width: "25ch",
@@ -64,6 +66,7 @@ enum Operation {
 }
 
 export const AdminItem: IReactComponent = observer(() => {
+	const [values, setValues] = useState({username: "", permission: "", companyID: "", companyName: ""});
 	const [operation, setOperation] = useState<Operation>(Operation.creating);
 	const [inputs, setInputs] = useState<Array<formGroup> | null>(null);
 
@@ -71,26 +74,42 @@ export const AdminItem: IReactComponent = observer(() => {
 
 	let query = useQuery();
 	let { adminType } = useParams<{adminType: string}>();
-
+	let history = useHistory();
+	const rootStore = useRootStore();
 	
 	useEffect(() => {
-		switch (adminType) {
-			case 'users': {
-				if(query.get("id")) {
-					setOperation(Operation.modifying);
-					setInputs(userInputs.modify);
-				} else {
-					setOperation(Operation.creating);
-					setInputs(userInputs.create);
+		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission != 'admin')) {
+			history.push('/');
+		} else {
+			switch (adminType) {
+				case 'users': {
+					if(query.get("id")) {
+						setOperation(Operation.modifying);
+						setInputs(userInputs.modify);
+					} else {
+						setOperation(Operation.creating);
+						setInputs(userInputs.create);
+					}
+					break;
 				}
-				break;
-			}
-			default: {
-				return;
+				default: {
+					return;
+				}
 			}
 		}
-		console.log(inputs);
 	}, []);
+
+	useEffect(() => {
+		console.log(values);
+	}, [values])
+
+	const getValue = (key: keyof typeof values) => {
+		if(key in values) {
+			return values[key];
+		}
+		setValues({...values, [key] : "0"});
+		return values[key];
+	}
 
 	const textTransform = (s: string) => {
 		if(s.includes("user")) {
@@ -108,8 +127,8 @@ export const AdminItem: IReactComponent = observer(() => {
 		return "";
 	}
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target);
+	const handleChange = (key: keyof typeof values, event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+		setValues({...values, [key]: event.target.value });
   };
 	
 	return(
@@ -144,10 +163,10 @@ export const AdminItem: IReactComponent = observer(() => {
 										inputs &&
 										inputs.map((el, i) => {
 											return (
-												<>
+												<React.Fragment key={i}>
 													{
 														el.groupTitle &&
-														<Grid item xs={12} key={i}>
+														<Grid item xs={12}>
 															<Typography className={classes.subTitle}>{el.groupTitle}</Typography>
 														</Grid>
 													}
@@ -158,16 +177,20 @@ export const AdminItem: IReactComponent = observer(() => {
 																	<TextField 
 																		required={item.required}
 																		disabled={item.disabled}
-																		id={item.title} label={item.title}
-																		select={item.type == inputType.select} 
+																		id={item.title}
+																		label={item.title}
+																		select={item.type == inputType.select ? true : false} 
 																		className={classes.input}
-																		onChange={handleChange}
-																		value={item.type == inputType.select ? item && item.values && item.values[0] : ''}
+																		onChange={(e) => handleChange(item.name as keyof typeof values, e)}
+																		value={getValue(item.name as keyof typeof values)}
 																	>
+																		{
+																			<option value="" style={{display: "none"}}></option>
+																		}
 																		{
 																			item.values &&
 																			item.values.map((opt, i) => (
-																				<option key={i} value={opt} className={classes.option}>
+																				<option key={opt + i} value={opt} className={classes.option}>
 																					{opt}
 																				</option>
 																			))
@@ -177,7 +200,7 @@ export const AdminItem: IReactComponent = observer(() => {
 															)
 														})
 													}
-											</>
+											</React.Fragment>
 											)
 										})
 									}

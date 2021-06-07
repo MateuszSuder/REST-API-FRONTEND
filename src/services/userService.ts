@@ -10,6 +10,7 @@ export const userInputs: formInputs = {
 				{
 					title: "Nazwa użytkownika",
 					required: true,
+					name: "username"
 				}
 			]
 		}
@@ -21,7 +22,8 @@ export const userInputs: formInputs = {
 			items: [
 				{
 					title: "Nazwa użytkownika",
-					disabled: true
+					disabled: true,
+					name: "username"
 				},
 				{
 					title: "Prawa",
@@ -29,7 +31,8 @@ export const userInputs: formInputs = {
 					values: [
 						'Użytkownik',
 						'Admin'
-					]
+					],
+					name: "permission"
 				}
 			]
 		},
@@ -39,11 +42,13 @@ export const userInputs: formInputs = {
 			items: [
 				{
 					title: "ID firmy",
-					disabled: true
+					disabled: true,
+					name: "companyID"
 				},
 				{
 					title: "Nazwa Firmy",
-					type: inputType.select
+					type: inputType.select,
+					name: "companyName"
 				}
 			]
 		},
@@ -52,25 +57,32 @@ export const userInputs: formInputs = {
 			groupTitle: "Adres dostawy",
 			items: [
 				{
-					title: "Imie"
+					title: "Imie",
+					name: "name"
 				},
 				{
-					title: "Nazwisko"
+					title: "Nazwisko",
+					name: "lastName"
 				},
 				{
-					title: "Państwo"
+					title: "Państwo",
+					name: "country"
 				},
 				{
-					title: "Miasto"
+					title: "Miasto",
+					name: "city"
 				},
 				{
-					title: "Kod pocztowy"
+					title: "Kod pocztowy",
+					name: "postcode"
 				},
 				{
-					title: "Ulica"
+					title: "Ulica",
+					name: "street"
 				},
 				{
-					title: "Numer domu"
+					title: "Numer domu",
+					name: "number"
 				}
 			]
 		},
@@ -80,7 +92,8 @@ export const userInputs: formInputs = {
 			items: [
 				{
 					title: "Numer zamówienia",
-					disabled: true
+					disabled: true,
+					name: "orderID"
 				},
 				{
 					title: "Status zamówienia",
@@ -90,12 +103,15 @@ export const userInputs: formInputs = {
 						"PaymentDone",
 						"Shipped",
 						"Delivered"
-					]
+					],
+					name: "status"
 				}
 			]	
 		}
 	]
 }
+
+console.log(JSON.stringify(userInputs));
 
 export interface User {
     company:        Company;

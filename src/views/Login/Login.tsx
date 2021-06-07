@@ -43,7 +43,6 @@ export const Login = observer(({store}: props) => {
 	let history = useHistory();
 
 	const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-		console.log(event.target.value);
 		setUser(event.target.value as String);
 	};
 
@@ -114,6 +113,7 @@ export const Login = observer(({store}: props) => {
 						>
 							{
 								users && 
+								users.length > 0 &&
 								users.map(el => <MenuItem key={el.id} value={el.id}>{el.username}</MenuItem>)
 							}
 						</Select>
