@@ -1,9 +1,15 @@
-import { Company } from "./companySevice";
-import makeRequest, {  requestType } from "./fetcher";
-import { Product } from "./productService";
+import {CompanyInfo} from "./companySevice";
+import makeRequest, {requestType} from "./fetcher";
+import {ProductInfo} from "./productService";
+
+export interface UserModifyInput {
+    companyID?:      string;
+    deliveryDetails?: Delivery;
+    permission?:     'user' | 'admin';
+}
 
 export interface User {
-    company:        Company;
+    company:        CompanyInfo;
     deliverDetails: Delivery;
     id:             string;
     orders:         Order[];
@@ -35,7 +41,7 @@ export interface Order {
 }
 
 export interface Item {
-    product:  Product;
+    product:  ProductInfo;
     quantity: number;
 }
 
@@ -75,4 +81,18 @@ export async function getUsersInfo(): Promise<UserInfo>{
 export async function getUsersMinified(): Promise<UserMinified[]>{
 	let res = await makeRequest(requestType.GET, "api/user/v2") ;
 	return res.json();
+}
+
+export async function createUser(username: string): Promise<string> {
+    let res = await makeRequest(requestType.POST, "api/user", JSON.stringify({username}));
+    return res.json();
+}
+
+export async function modifyUser(userID: string, input: UserModifyInput) {
+    return await makeRequest(requestType.POST, `api/user/${userID}`, JSON.stringify({...input}));
+}
+
+export async function getUser(userID: string): Promise<User> {
+    let res = await makeRequest(requestType.GET, `api/user/${userID}`) ;
+    return res.json();
 }

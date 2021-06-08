@@ -1,38 +1,61 @@
 import {IReactComponent} from "mobx-react/dist/types/IReactComponent";
 import {observer} from "mobx-react";
 import {theme} from "../../App";
-import {Grid, MenuItem, TextField, ThemeProvider, Typography} from "@material-ui/core";
-import {adminItemStyles, Model, ModelOption} from "../../views/Admin/AdminItem";
-import {useLocation} from "react-router-dom";
+import {ThemeProvider} from "@material-ui/core";
+import { Model, ModelOption} from "../../views/Admin/AdminItem";
 import {useEffect, useState} from "react";
-import {Company, getCompanies} from "../../services/companySevice";
+import {CompanyInfo, getCompanies} from "../../services/companySevice";
 import React from "react";
 import {ItemForm} from "./ItemForm";
 import {ItemHeader} from "./ItemHeader";
+import {createUser, getUser, modifyUser} from "../../services/userService";
+import {useHistory, useLocation} from "react-router-dom";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export const User: IReactComponent = observer(({operation}: {operation: 'creating' | 'modifying'}) => {
-  const [values, setValues] = useState({userID: "", username: "", permission: "user", company: {ID: "", name: ""}});
-  const [companies, setCompanies] = useState<Array<Company>>([{id: "1", name: "1n"}, {id: "2", name: "2n"}]);
+  const [values, setValues] = useState({
+    userID: "", username: "", permission: "user",
+    companyID: "", companyName: "",
+    deliveryDetails: {
+      name: "", lastName: "",
+      address: {
+        city: "", country: "", number: "", postcode: "", street: ""
+      }
+    }
+  });
+  const [companies, setCompanies] = useState<Array<CompanyInfo>>();
+  const [companiesOptions, setCompaniesOptions] = useState([{label: '', value: ''}]);
 
-  const fetchCompanies = () => {
-    getCompanies().then(data =>
-      setCompanies(data)
-    )
+  let history = useHistory();
+  let query = useQuery();
 
-    const res: Array<ModelOption> = companies.map(company => (
+  const fetchCompanies = async () => {
+    const res = await getCompanies();
+    setCompanies(res);
+  }
+
+  const initCompaniesOptions = () => {
+
+    if(!companies) return;
+    const opts: Array<ModelOption> = companies.map(company => (
       {
         'label': company.name,
         'value': company.name
       }
     ))
 
-    return res;
+    setCompaniesOptions(opts);
   }
 
   const findCompanyID = (n: string) => {
-    const res = companies.find(c => c.name === n);
-    if(res) {
-      return res.id;
+    if(companies) {
+      const res = companies.find(c => c.name === n);
+      if(res) {
+        return res.id;
+      }
     }
 
     return "";
@@ -59,7 +82,7 @@ export const User: IReactComponent = observer(({operation}: {operation: 'creatin
         items: [
           {
             label: "Nazwa użytkownika",
-            value: values.userID,
+            value: values.username,
             disabled: true
           },
           {
@@ -86,18 +109,80 @@ export const User: IReactComponent = observer(({operation}: {operation: 'creatin
         items: [
           {
             label: "ID firmy",
-            value: values.company.ID,
+            value: values.companyID,
             disabled: true
           },
           {
             label: "Nazwa Firmy",
-            value: values.company.name,
+            value: values.companyName,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({
               ...values,
-              'company': {ID: findCompanyID(v.target.value), name: v.target.value}
+              'companyID': findCompanyID(v.target.value),
+              'companyName': v.target.value
             }),
-            options: fetchCompanies()
+            options: companiesOptions
           }
+        ]
+      },
+      {
+        groupName: "Adres dostawy",
+        xs: 6,
+        items: [
+          {
+            label: "Imię",
+            value: values.deliveryDetails.name,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'deliveryDetails': {...values.deliveryDetails, name: v.target.value}})
+          },
+          {
+            label: "Nazwisko",
+            value: values.deliveryDetails.lastName,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'deliveryDetails': {...values.deliveryDetails, lastName: v.target.value}})
+          },
+          {
+            label: "Państwo",
+            value: values.deliveryDetails.address.country,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({
+              ...values,
+              'deliveryDetails': {...values.deliveryDetails,
+                address: {...values.deliveryDetails.address,
+                  country: v.target.value}}})
+          },
+          {
+            label: "Kod pocztowy",
+            value: values.deliveryDetails.address.postcode,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({
+              ...values,
+              'deliveryDetails': {...values.deliveryDetails,
+                address: {...values.deliveryDetails.address,
+                  postcode: v.target.value}}})
+          },
+          {
+            label: "Miasto",
+            value: values.deliveryDetails.address.city,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({
+              ...values,
+              'deliveryDetails': {...values.deliveryDetails,
+                address: {...values.deliveryDetails.address,
+                  city: v.target.value}}})
+          },
+          {
+            label: "Ulica",
+            value: values.deliveryDetails.address.street,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({
+              ...values,
+              'deliveryDetails': {...values.deliveryDetails,
+                address: {...values.deliveryDetails.address,
+                  street: v.target.value}}})
+          },
+          {
+            label: "Numer domu/mieszkania (np.: 24/6)",
+            value: values.deliveryDetails.address.number,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({
+              ...values,
+              'deliveryDetails': {...values.deliveryDetails,
+                address: {...values.deliveryDetails.address,
+                  number: v.target.value}}})
+          },
         ]
       }
     ]
@@ -107,8 +192,55 @@ export const User: IReactComponent = observer(({operation}: {operation: 'creatin
     console.log(values);
   }, [values])
 
+  useEffect(() => {
+    console.log(companiesOptions);
+  }, [companiesOptions])
+
+  useEffect(() => {
+    const id = query.get('id');
+    if(id) {
+      setValues({...values, userID: id})
+    }
+  }, [])
+
+  useEffect(() => {
+    if(values.userID !== "") {
+      getUser(values.userID).then(data => {
+        console.log(data);
+        setValues({
+          ...values,
+          companyID: data.company && data.company.id ? data.company.id : values.companyID,
+          companyName: data.company && data.company.name ? data.company.name : values.companyName,
+          permission: data.permission,
+          username: data.username,
+          deliveryDetails: data.deliverDetails ? data.deliverDetails : values.deliveryDetails
+        })
+      })
+    }
+  }, [values.userID])
+
+
+  useEffect(() => {
+    if(!companies || (companies && companies.length === 0)) {
+      fetchCompanies();
+    }
+    initCompaniesOptions();
+  }, [companies])
+
   const onSubmit = () => {
-    console.log('Submit!');
+    if(operation === 'creating') {
+      createUser(values.username).then(r =>
+        history.goBack()
+      );
+    }
+
+    if(operation === 'modifying') {
+      modifyUser(values.userID, {
+        companyID: values.companyID ? values.companyID : undefined,
+        deliveryDetails: values.deliveryDetails,
+        permission: values.permission as 'user' | 'admin'
+      }).then(r => history.goBack());
+    }
   }
 
   return (

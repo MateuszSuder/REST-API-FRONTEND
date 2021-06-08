@@ -5,7 +5,7 @@ export interface ProductsInfo {
 	productsWithLowAmount: number
 }
 
-export interface Product {
+export interface ProductInfo {
     amount:        number;
     description:   string;
     id:            string;
@@ -32,13 +32,13 @@ export async function getProductsInfo(q: number): Promise<ProductsInfo>{
 	return res.json();
 }
 
-export async function getProducts(): Promise<Product[]>{
+export async function getProducts(): Promise<ProductInfo[]>{
 	let res = await makeRequest(requestType.POST, "api/product/");
 	return res.json();
 }
 
 export async function getProductsMinified(): Promise<ProductMinified[]>{
-	let res = await makeRequest(requestType.POST, "api/product/v2");
+	let res = await makeRequest(requestType.POST, "api/product/v2/products");
 	return res.json();
 }
 

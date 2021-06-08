@@ -46,6 +46,7 @@ export const ItemForm: IReactComponent = observer(({model, operation, submit}: {
                         onChange={item.setValue}
                         disabled={item.disabled}
                         className={classes.input}
+												type={item.type ? "number" : "text"}
                     />
 									}
 								</Grid>

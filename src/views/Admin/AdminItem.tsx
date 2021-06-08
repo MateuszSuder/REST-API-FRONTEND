@@ -37,6 +37,7 @@ export interface ModelItem {
 	options?: Array<ModelOption>,
 	disabled?: boolean,
 	required?: boolean
+	type?: 'number'
 }
 
 export interface ModelGroup {
@@ -118,7 +119,7 @@ export enum Type {
 }
 
 export const AdminItem: IReactComponent = observer(() => {
-	const [type, setType] = useState<Type>(Type.User);
+	const [type, setType] = useState<Type>();
 	const [operation, setOperation] = useState<'creating' | 'modifying'>('creating');
 
 

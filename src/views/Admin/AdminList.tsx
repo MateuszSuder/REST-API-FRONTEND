@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import { Company, getCompanies } from '../../services/companySevice';
+import { CompanyInfo, getCompanies } from '../../services/companySevice';
 import { getOrdersMinified, OrderMinified } from '../../services/orderService';
 import { getProductsMinified, ProductMinified } from '../../services/productService';
 import { getUsersMinified, UserMinified } from '../../services/userService';
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export const AdminList: IReactComponent = observer(() => {
 	const [listType, setListType] = useState("");
-	const [list, setList] = useState<Company[] | OrderMinified[] | UserMinified[] | ProductMinified[]>([{id: "0", name: ""}]);
+	const [list, setList] = useState<CompanyInfo[] | OrderMinified[] | UserMinified[] | ProductMinified[]>([{id: "0", name: ""}]);
 
 	const classes = useStyles();
 	const rootStore = useRootStore();
@@ -122,7 +122,7 @@ export const AdminList: IReactComponent = observer(() => {
 			<Container>
 				<Grid container spacing={3} className={classes.g}>
 					{
-						list && list.map((el: Company | OrderMinified | UserMinified | ProductMinified, i: number) => {
+						list && list.map((el: CompanyInfo | OrderMinified | UserMinified | ProductMinified, i: number) => {
 							return (
 								<Grid item xs={12} key={i}>
 									<Paper className={classes.paper}>
