@@ -128,7 +128,7 @@ export const Admin = () => {
 	let history = useHistory();
 
 	useEffect(() => {
-		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission != 'admin')) {
+		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission !== 'admin')) {
 			history.push('/');
 		} else {
 			getUsersInfo().then(res => {

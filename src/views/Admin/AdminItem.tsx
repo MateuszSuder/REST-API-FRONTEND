@@ -25,16 +25,24 @@ import {User} from "../../components/Admin/User";
 import {Product} from "../../components/Admin/Product";
 import {Order} from "../../components/Admin/Order";
 
+export interface ModelOption {
+	label: string,
+	value: string
+}
+
+export interface ModelItem {
+	label: string,
+	value: any,
+	setValue?: React.Dispatch<any>,
+	options?: Array<ModelOption>,
+	disabled?: boolean,
+	required?: boolean
+}
+
 export interface ModelGroup {
 	groupName?: string,
 	xs: GridSize,
-	items: [
-		{
-			label: string,
-			value: any,
-			setValue: React.Dispatch<any>
-		}
-	]
+	items: Array<ModelItem>
 }
 
 export interface Model {
@@ -78,7 +86,7 @@ export const adminItemStyles = makeStyles((theme: Theme) =>
 			marginBottom: theme.spacing(2)
 		},
 		input: {
-			width: "25ch",
+			width: "70%",
 		},
 		option: {
 			padding: theme.spacing(1),
@@ -86,6 +94,14 @@ export const adminItemStyles = makeStyles((theme: Theme) =>
 			"&:hover": {
 				backgroundColor: theme.palette.action.hover,
 			}
+		},
+		submit: {
+			borderTopStyle: "solid",
+			borderTopWidth: "1px",
+			borderTopColor: theme.palette.primary.light,
+			marginTop: theme.spacing(3),
+			paddingTop: theme.spacing(2),
+			textAlign: "center"
 		}
 	})
 )
@@ -94,7 +110,7 @@ function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
-enum Type {
+export enum Type {
 	User,
 	Company,
 	Product,

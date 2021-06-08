@@ -3,13 +3,11 @@ import { observer } from 'mobx-react';
 import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
-import { categories } from '../../services/categoryService';
 import { Company, getCompanies } from '../../services/companySevice';
 import { getOrdersMinified, OrderMinified } from '../../services/orderService';
 import { getProductsMinified, ProductMinified } from '../../services/productService';
 import { getUsersMinified, UserMinified } from '../../services/userService';
 import * as translation from '../../translation.json';
-import { AdminItem } from './AdminItem';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useRootStore } from '../../context/context';
 
@@ -80,7 +78,7 @@ export const AdminList: IReactComponent = observer(() => {
 	}
 
 	useEffect(() => {
-		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission != 'admin')) {
+		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission !== 'admin')) {
 			history.push('/');
 		} else {
 			setListType("");
