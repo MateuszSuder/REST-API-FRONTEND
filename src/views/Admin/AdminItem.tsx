@@ -1,4 +1,19 @@
-import { Container, createStyles, FormControl, Grid, Input, InputLabel, makeStyles, MenuItem, Paper, TextField, Theme, ThemeProvider, Typography } from '@material-ui/core';
+import {
+	Container,
+	createStyles,
+	FormControl,
+	Grid,
+	GridSize,
+	Input,
+	InputLabel,
+	makeStyles,
+	MenuItem,
+	Paper,
+	TextField,
+	Theme,
+	ThemeProvider,
+	Typography
+} from '@material-ui/core';
 import { observer } from 'mobx-react';
 import { IReactComponent } from 'mobx-react/dist/types/IReactComponent';
 import React, { useEffect, useState } from 'react';
@@ -9,6 +24,23 @@ import {Company} from "../../components/Admin/Company";
 import {User} from "../../components/Admin/User";
 import {Product} from "../../components/Admin/Product";
 import {Order} from "../../components/Admin/Order";
+
+export interface ModelGroup {
+	groupName?: string,
+	xs: GridSize,
+	items: [
+		{
+			label: string,
+			value: any,
+			setValue: React.Dispatch<any>
+		}
+	]
+}
+
+export interface Model {
+	create: Array<ModelGroup>,
+	modify: Array<ModelGroup>
+}
 
 export const adminItemStyles = makeStyles((theme: Theme) =>
   createStyles({
