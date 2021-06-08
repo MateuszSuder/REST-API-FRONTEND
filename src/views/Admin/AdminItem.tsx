@@ -5,10 +5,12 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { theme } from '../../App';
 import { useRootStore } from '../../context/context';
-import { formGroup, formInputs, formItem, inputType } from '../../services/fetcher';
-import { userInputs } from '../../services/userService';
+import {Company} from "../../components/Admin/Company";
+import {User} from "../../components/Admin/User";
+import {Product} from "../../components/Admin/Product";
+import {Order} from "../../components/Admin/Order";
 
-const useStyles = makeStyles((theme: Theme) =>
+export const adminItemStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
@@ -60,17 +62,19 @@ function useQuery() {
 	return new URLSearchParams(useLocation().search);
 }
 
-enum Operation {
-	creating,
-	modifying
+enum Type {
+	User,
+	Company,
+	Product,
+	Order
 }
 
 export const AdminItem: IReactComponent = observer(() => {
-	const [values, setValues] = useState({username: "", permission: "", companyID: "", companyName: ""});
-	const [operation, setOperation] = useState<Operation>(Operation.creating);
-	const [inputs, setInputs] = useState<Array<formGroup> | null>(null);
+	const [type, setType] = useState<Type>(Type.User);
+	const [operation, setOperation] = useState<'creating' | 'modifying'>('creating');
 
-	const classes = useStyles();
+
+	const classes = adminItemStyles();
 
 	let query = useQuery();
 	let { adminType } = useParams<{adminType: string}>();
@@ -78,59 +82,37 @@ export const AdminItem: IReactComponent = observer(() => {
 	const rootStore = useRootStore();
 	
 	useEffect(() => {
-		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission != 'admin')) {
+		if(!rootStore.user.userLogged || (rootStore.user.userLogged && rootStore.user.user && rootStore.user.user.permission !== 'admin')) {
 			history.push('/');
 		} else {
-			switch (adminType) {
+			switch(adminType) {
 				case 'users': {
-					if(query.get("id")) {
-						setOperation(Operation.modifying);
-						setInputs(userInputs.modify);
-					} else {
-						setOperation(Operation.creating);
-						setInputs(userInputs.create);
-					}
+					setType(Type.User);
+					setOperation(query.get('id') ? 'modifying' : 'creating');
+					break;
+				}
+				case 'companies': {
+					setType(Type.Company);
+					setOperation(query.get('id') ? 'modifying' : 'creating');
+					break;
+				}
+				case 'products': {
+					setType(Type.Product);
+					setOperation(query.get('id') ? 'modifying' : 'creating');
+					break;
+				}
+				case 'Order': {
+					setType(Type.Order);
+					setOperation(query.get('id') ? 'modifying' : 'creating');
 					break;
 				}
 				default: {
-					return;
+					history.push('/');
 				}
 			}
 		}
-	}, []);
+	}, [adminType, history, query, rootStore.user.user, rootStore.user.userLogged]);
 
-	useEffect(() => {
-		console.log(values);
-	}, [values])
-
-	const getValue = (key: keyof typeof values) => {
-		if(key in values) {
-			return values[key];
-		}
-		setValues({...values, [key] : "0"});
-		return values[key];
-	}
-
-	const textTransform = (s: string) => {
-		if(s.includes("user")) {
-			return "Użytkownik";
-		}
-		if(s.includes("order")) {
-			return "Zamówienie";
-		}
-		if(s.includes("compan")) {
-			return "Firma";
-		}
-		if(s.includes("product")) {
-			return "Produkt";
-		}
-		return "";
-	}
-
-	const handleChange = (key: keyof typeof values, event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-		setValues({...values, [key]: event.target.value });
-  };
-	
 	return(
 		<ThemeProvider theme={theme}>
 			<Container>
@@ -139,70 +121,20 @@ export const AdminItem: IReactComponent = observer(() => {
 						<Paper className={classes.paper}>
 								<Grid container>
 									{
-										operation === Operation.modifying &&
-
-										<Grid item xs={6}>
-											<Typography className={classes.title}>
-												ID: {query.get("id")}
-											</Typography>
-										</Grid>
-									}
-									<Grid item xs={operation === Operation.modifying ? 6 : 12}>
-										<Typography className={classes.type}>
-											{ textTransform(adminType) }
-										</Typography>
-									</Grid>
-									{
-										operation === Operation.modifying &&
-
-										<Grid item xs={12}>
-											<Typography className={classes.delete}>Usuń...</Typography>
-										</Grid>
+										type === Type.User &&
+										<User operation={operation}/>
 									}
 									{
-										inputs &&
-										inputs.map((el, i) => {
-											return (
-												<React.Fragment key={i}>
-													{
-														el.groupTitle &&
-														<Grid item xs={12}>
-															<Typography className={classes.subTitle}>{el.groupTitle}</Typography>
-														</Grid>
-													}
-													{
-														el.items.map((item: formItem, i: number, ar) => {
-															return (
-																<Grid item xs={el.gridSize} key={i}>
-																	<TextField 
-																		required={item.required}
-																		disabled={item.disabled}
-																		id={item.title}
-																		label={item.title}
-																		select={item.type == inputType.select ? true : false} 
-																		className={classes.input}
-																		onChange={(e) => handleChange(item.name as keyof typeof values, e)}
-																		value={getValue(item.name as keyof typeof values)}
-																	>
-																		{
-																			<option value="" style={{display: "none"}}></option>
-																		}
-																		{
-																			item.values &&
-																			item.values.map((opt, i) => (
-																				<option key={opt + i} value={opt} className={classes.option}>
-																					{opt}
-																				</option>
-																			))
-																		}
-																	</TextField>
-																</Grid>
-															)
-														})
-													}
-											</React.Fragment>
-											)
-										})
+										type === Type.Company &&
+										<Company operation={operation}/>
+									}
+									{
+										type === Type.Product &&
+										<Product operation={operation} />
+									}
+									{
+										type === Type.Order &&
+										<Order operation={operation} />
 									}
 								</Grid>
 						</Paper>
