@@ -9,6 +9,8 @@ import {ItemForm} from "./ItemForm";
 import {Model} from "../../views/Admin/AdminItem";
 import {ItemSubmit} from "./ItemSubmit";
 import {ItemSpecification} from "./ItemSpecification";
+import {createCompany, modifyCompany} from "../../services/companySevice";
+import {createProduct} from "../../services/productService";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -57,7 +59,7 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
             label: "Cena",
             required: true,
             value: values.price,
-            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'price': parseInt(v.target.value)}),
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'price': parseFloat(v.target.value)}),
             type: "number"
           },
           {
@@ -65,6 +67,7 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
             required: true,
             value: values.amount,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'amount': parseInt(v.target.value)}),
+            type: "number"
           },
         ]
       },
@@ -78,22 +81,6 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'description': v.target.value}),
           },
         ],
-      },
-      {
-        groupName: "Specyfikacja",
-        xs: 6,
-        items: [
-          {
-            label: "Specyfikacja",
-            value: values.description,
-            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'description': v.target.value}),
-          },
-          {
-            label: "Opis",
-            value: values.description,
-            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'description': v.target.value}),
-          }
-        ]
       }
     ],
     modify: [
@@ -116,13 +103,15 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
             label: "Cena",
             required: true,
             value: values.price,
-            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'price': parseInt(v.target.value)}),
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'price': parseFloat(v.target.value)}),
+            type: "number"
           },
           {
             label: "Ilość",
             required: true,
-            value: values.price,
+            value: values.amount,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'amount': parseInt(v.target.value)}),
+            type: "number"
           },
         ]
       }
@@ -134,14 +123,36 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
       return;
     }
 
+    if(operation === 'creating') {
+      let spec = specification.filter(el => (el.key !== "" && el.val !== ""))
+      let input = {
+        name: values.name,
+        description: values.description,
+        amount: values.amount,
+        price: values.price,
+        specification: spec
+      };
+      createProduct(input);
+      return;
+    }
 
+    if(operation === 'modifying') {
+
+      return;
+    }
+  }
+
+  const onAdd = () => {
+    const temp = [...specification];
+    temp.push({key: "", val: ""})
+    setSpecification([...temp])
   }
 
   return (
     <ThemeProvider theme={theme}>
       <ItemHeader type="Produkt" />
       <ItemForm model={CompanyModel} operation={operation} />
-      <ItemSpecification />
+      <ItemSpecification spec={SpecificationModel} handleAdd={onAdd} />
       <ItemSubmit submit={onSubmit} />
     </ThemeProvider>
   )

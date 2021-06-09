@@ -103,6 +103,18 @@ export const adminItemStyles = makeStyles((theme: Theme) =>
 			marginTop: theme.spacing(3),
 			paddingTop: theme.spacing(2),
 			textAlign: "center"
+		},
+		key: {
+			textAlign: "right",
+			padding: theme.spacing(2)
+		},
+		val: {
+			textAlign: "left",
+			padding: theme.spacing(2)
+		},
+		add: {
+    	textAlign: "right",
+			cursor: "pointer"
 		}
 	})
 )
