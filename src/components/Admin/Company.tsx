@@ -9,6 +9,7 @@ import {CompanyInfo, createCompany, getCompany, modifyCompany} from "../../servi
 import {Model} from "../../views/Admin/AdminItem";
 import {useHistory, useLocation} from "react-router-dom";
 import {createUser, modifyUser} from "../../services/userService";
+import {ItemSubmit} from "./ItemSubmit";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -83,7 +84,8 @@ export const Company: IReactComponent = observer(({operation}: {operation: 'crea
   return (
     <ThemeProvider theme={theme}>
       <ItemHeader type="Firma" />
-      <ItemForm model={CompanyModel} operation={operation} submit={onSubmit} />
+      <ItemForm model={CompanyModel} operation={operation} />
+      <ItemSubmit submit={onSubmit} />
     </ThemeProvider>
   )
 });

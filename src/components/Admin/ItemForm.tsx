@@ -5,7 +5,7 @@ import {Button, Grid, MenuItem, TextField, ThemeProvider, Typography} from "@mat
 import React from "react";
 import {adminItemStyles, Model} from "../../views/Admin/AdminItem";
 
-export const ItemForm: IReactComponent = observer(({model, operation, submit}: {model: Model, operation: 'creating' | 'modifying', submit: () => any}) => {
+export const ItemForm: IReactComponent = observer(({model, operation}: {model: Model, operation: 'creating' | 'modifying'}) => {
 	const classes = adminItemStyles();
 
 	return(
@@ -55,11 +55,6 @@ export const ItemForm: IReactComponent = observer(({model, operation, submit}: {
 					</React.Fragment>
 				))
 			}
-			<Grid item xs={12} className={classes.submit}>
-				<Button variant="contained" color="primary" onClick={() => submit()}>
-					Zapisz
-				</Button>
-			</Grid>
 		</ThemeProvider>
 	)
 })

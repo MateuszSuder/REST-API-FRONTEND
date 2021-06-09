@@ -10,6 +10,7 @@ import {ItemForm} from "./ItemForm";
 import {ItemHeader} from "./ItemHeader";
 import {createUser, getUser, modifyUser} from "../../services/userService";
 import {useHistory, useLocation} from "react-router-dom";
+import {ItemSubmit} from "./ItemSubmit";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -246,7 +247,8 @@ export const User: IReactComponent = observer(({operation}: {operation: 'creatin
   return (
     <ThemeProvider theme={theme}>
       <ItemHeader type="Użytkownik" />
-      <ItemForm model={UserModel} operation={operation} submit={onSubmit} />
+      <ItemForm model={UserModel} operation={operation} />
+      <ItemSubmit submit={onSubmit} />
     </ThemeProvider>
   );
 })
