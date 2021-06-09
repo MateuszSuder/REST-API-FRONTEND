@@ -37,7 +37,7 @@ export interface ModelItem {
 	options?: Array<ModelOption>,
 	disabled?: boolean,
 	required?: boolean
-	type?: 'number'
+	type?: 'number',
 }
 
 export interface ModelGroup {

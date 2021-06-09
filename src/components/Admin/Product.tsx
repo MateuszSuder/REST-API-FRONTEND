@@ -38,13 +38,41 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
             required: true,
             value: values.price,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'price': parseInt(v.target.value)}),
+            type: "number"
           },
           {
             label: "Ilość",
             required: true,
-            value: values.price,
+            value: values.amount,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'amount': parseInt(v.target.value)}),
           },
+        ]
+      },
+      {
+        groupName: "Opis produktu",
+        xs: 12,
+        items: [
+          {
+            label: "Opis",
+            value: values.description,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'description': v.target.value}),
+          },
+        ],
+      },
+      {
+        groupName: "Specyfikacja",
+        xs: 6,
+        items: [
+          {
+            label: "Specyfikacja",
+            value: values.description,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'description': v.target.value}),
+          },
+          {
+            label: "Opis",
+            value: values.description,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'description': v.target.value}),
+          }
         ]
       }
     ],
