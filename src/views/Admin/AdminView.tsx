@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 
-export const Admin = () => {
+export const AdminView = () => {
 	const [usersNumber, setUsersNumber] = useState(0);
 	const [companiesNumber, setCompaniesNumber] = useState(0);
 	const [productsInfo, setProductsInfo] = useState<ProductsInfo>({numberOfProducts: 0, productsWithLowAmount: 0});

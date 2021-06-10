@@ -146,11 +146,14 @@ export const AdminList: IReactComponent = observer(() => {
 							)
 						})
 					}
-					<Grid container justify="flex-end" className={classes.buttonContainer}>
-						<Link to={history.location.pathname + '/'}>
-							<AddCircleIcon color="primary" style={{fontSize: "40px"}} className={classes.button} />
-						</Link>
-					</Grid>
+					{
+						listType !== 'orders' &&
+						<Grid container justify="flex-end" className={classes.buttonContainer}>
+							<Link to={history.location.pathname + '/'}>
+								<AddCircleIcon color="primary" style={{fontSize: "40px"}} className={classes.button} />
+							</Link>
+						</Grid>
+					}
 				</Grid>
 			</Container>
 		</>

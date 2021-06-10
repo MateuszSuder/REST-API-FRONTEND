@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export const Login = observer(({store}: props) => {
+export const LoginView = observer(({store}: props) => {
 	const [users, setUsers] = useState<User[]>([]);
 	const [user, setUser] = useState<String>("");
 

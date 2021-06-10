@@ -87,6 +87,7 @@ export const adminItemStyles = makeStyles((theme: Theme) =>
 			marginBottom: theme.spacing(2)
 		},
 		input: {
+    	marginTop: theme.spacing(2),
 			width: "70%",
 		},
 		option: {
@@ -115,7 +116,13 @@ export const adminItemStyles = makeStyles((theme: Theme) =>
 		add: {
     	textAlign: "right",
 			cursor: "pointer"
-		}
+		},
+	  categoryTitle: {
+		  textAlign: "center",
+		  fontSize: "1.5rem",
+		  margin: theme.spacing(0.25),
+		  textTransform: "capitalize"
+	  },
 	})
 )
 

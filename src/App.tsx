@@ -4,13 +4,14 @@ import './App.css';
 import { TopBar } from './components/Header/TopBar';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Login } from './views/Login/Login';
-import { Admin } from './views/Admin/Admin';
+import { LoginView } from './views/Login/LoginView';
+import { AdminView } from './views/Admin/AdminView';
 import { AccountCreation } from './views/Register/AccountCreation';
 import { useRootStore } from './context/context';
 import { RootStore } from './stores/RootStore';
 import { AdminList } from './views/Admin/AdminList';
 import { AdminItem } from './views/Admin/AdminItem';
+import {IndexView} from "./views/Index/IndexView";
 
 export interface props {
 	store: RootStore
@@ -38,7 +39,7 @@ const App = observer(() => {
 			<ThemeProvider theme={theme}>
 				<Switch>
 					<Route path="/login">
-						<Login store={useRootStore()} />
+						<LoginView store={useRootStore()} />
 					</Route>
 					<Route path="/register">
 						<AccountCreation />
@@ -54,7 +55,10 @@ const App = observer(() => {
 									<AdminList />
 								</Route>
 								<Route path="/admin">
-									<Admin />
+									<AdminView />
+								</Route>
+								<Route path="/:category">
+									<IndexView />
 								</Route>
 							</Switch>
 						</div>

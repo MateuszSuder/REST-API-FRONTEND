@@ -2,7 +2,7 @@ import {IReactComponent} from "mobx-react/dist/types/IReactComponent";
 import {observer} from "mobx-react";
 import {theme} from "../../App";
 import { ThemeProvider } from "@material-ui/core";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory, useLocation} from "react-router-dom";
 import {ItemHeader} from "./ItemHeader";
 import {ItemForm} from "./ItemForm";
@@ -10,8 +10,8 @@ import {Model} from "../../views/Admin/AdminItem";
 import {ItemSubmit} from "./ItemSubmit";
 import {ItemSpecification} from "./ItemSpecification";
 import {createCompany, modifyCompany} from "../../services/companySevice";
-import {createProduct} from "../../services/productService";
-
+import {createProduct, getProduct} from "../../services/productService";
+import {addProductsToCategory, Category, getCategories} from "../../services/categoryService";
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -23,8 +23,9 @@ export interface Specification {
 }
 
 export const Product: IReactComponent = observer(({operation}: {operation: 'creating' | 'modifying'}) => {
-  const [values, setValues] = useState({id: "", name: "", price: 0, amount: 0, description: ""});
-  const [specification, setSpecification] = useState<Array<{key: string, val: string}>>([{key: "1", val: "1"}, {key: "2", val: "2"}])
+  const [values, setValues] = useState({id: "", name: "", price: 0, amount: 0, description: "", category: ""});
+  const [specification, setSpecification] = useState<Array<{key: string, val: string}>>([{key: "", val: ""}])
+  const [categories, setCategories] =  useState<Array<{label: string, value: string}>>([]);
 
   let history = useHistory();
   let query = useQuery();
@@ -47,13 +48,19 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
     create: [
       {
         groupName: "Główne informacje",
-        xs: 4,
+        xs: 6,
         items: [
           {
             label: "Nazwa produktu",
             required: true,
             value: values.name,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'name': v.target.value}),
+          },
+          {
+            label: "Kategoria",
+            value: values.category,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'category': v.target.value}),
+            options: categories
           },
           {
             label: "Cena",
@@ -89,15 +96,16 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
         xs: 6,
         items: [
           {
-            label: "ID produktu",
-            disabled: true,
-            value: values.id,
-          },
-          {
             label: "Nazwa produktu",
             required: true,
             value: values.name,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'name': v.target.value}),
+          },
+          {
+            label: "Kategoria",
+            value: values.category,
+            setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'category': v.target.value}),
+            options: categories
           },
           {
             label: "Cena",
@@ -118,7 +126,7 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
     ]
   }
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if(!values.name || values.name === "") {
       return;
     }
@@ -132,14 +140,17 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
         price: values.price,
         specification: spec
       };
-      createProduct(input);
-      return;
+      await createProduct(input).then(async id => {
+        await addProductsToCategory(values.category, [id]);
+      })
     }
 
     if(operation === 'modifying') {
 
       return;
     }
+
+    history.goBack();
   }
 
   const onAdd = () => {
@@ -147,6 +158,34 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
     temp.push({key: "", val: ""})
     setSpecification([...temp])
   }
+
+  useEffect(() => {
+    getCategories().then(data => {
+      data.forEach(c => {
+        const temp = [{label: "Brak", value: ""}];
+        temp.push({label: c.categoryName, value: c.categoryName})
+        setCategories(temp);
+      })
+    })
+
+    if (operation === 'modifying') {
+      const id = query.get('id');
+      if(id) {
+        getProduct(id).then(p => {
+          setValues({
+            ...values,
+            'id': id,
+            'name': p.product.name,
+            'amount': p.product.amount ? p.product.amount : values.amount,
+            'price': p.product.price ? p.product.price : values.price,
+            'description': p.product.description ? p.product.description : values.description,
+            'category': p.category ? p.category : values.category
+          })
+          setSpecification(p.product.specification ? p.product.specification : [...specification])
+        })
+      }
+    }
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>

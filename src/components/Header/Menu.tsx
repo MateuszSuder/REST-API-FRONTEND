@@ -6,7 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { categories, getCategories } from '../../services/categoryService';
+import { Category, getCategories } from '../../services/categoryService';
+import {useHistory} from "react-router-dom";
 
 const StyledMenu = withStyles({
   paper: {
@@ -42,7 +43,9 @@ const StyledMenuIcon = withStyles((theme) => ({
 
 export const CategoryMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [cat, setCat] = useState<categories[]>();
+  const [cat, setCat] = useState<Category[]>();
+
+  let history = useHistory();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,10 +56,14 @@ export const CategoryMenu = () => {
   };
 
   React.useEffect(() => {
-	getCategories().then(res => {
-		setCat(res);
-	})
+    getCategories().then(res => {
+      setCat(res);
+    })
   }, [])
+
+  const changeCategory = (e: string) => {
+    history.push(e.toLocaleLowerCase())
+  }
 
   return (
     <div>
@@ -79,7 +86,7 @@ export const CategoryMenu = () => {
       >
 		{ cat &&
 		  cat.map(el => (
-				<StyledMenuItem key={el.categoryName}>
+				<StyledMenuItem value={el.categoryName} onClick={() => changeCategory(el.categoryName)} key={el.categoryName}>
 					<ListItemText primary={el.categoryName} />
 					<StyledMenuIcon>
 						<ArrowForwardIosIcon fontSize="small" />
