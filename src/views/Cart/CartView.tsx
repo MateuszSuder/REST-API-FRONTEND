@@ -10,6 +10,11 @@ export const cartStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		cart: {
 			margin: theme.spacing(2)
+		},
+		item: {
+			marginBottom: theme.spacing(5),
+			borderBottom: "solid 1px black",
+			borderBottomColor: theme.palette.primary.main
 		}
 	})
 )
@@ -22,8 +27,8 @@ export const CartView: IReactComponent = observer(() => {
 	return (
 		<ThemeProvider theme={theme}>
 			<Grid container justify="center" className={classes.g}>
-				<Paper className={classes.paper} style={{width: "80vw"}}>
-					<Grid xs={12} className={cart.cart}>
+				<Paper className={classes.paper} style={{width: "80vw", justifyContent: "center"}}>
+					<Grid item xs={12} className={cart.cart}>
 						<Typography align="center">
 							Koszyk
 						</Typography>
@@ -31,7 +36,7 @@ export const CartView: IReactComponent = observer(() => {
 					{
 						store.cart.items.length > 0 &&
 						store.cart.items.map((item, i) => (
-							<Grid container key={i}>
+							<Grid container key={i} className={cart.item}>
 								<Grid item xs={3}>
 									{
 										<Typography  align="center">
@@ -55,7 +60,7 @@ export const CartView: IReactComponent = observer(() => {
 								</Grid>
 								<Grid item xs={3}>
 									<Typography align="center">
-										<CloseIcon color="error" />
+										<CloseIcon color="error" cursor="pointer" onClick={() => store.cart.removeFromCart(item.id)} />
 									</Typography>
 								</Grid>
 							</Grid>

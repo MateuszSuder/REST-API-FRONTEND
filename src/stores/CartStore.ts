@@ -34,4 +34,12 @@ export class CartStore {
 			this.amount += it.quantity;
 		}
 	}
+
+	removeFromCart(id: string) {
+		const p = this.items.find(e => e.id === id);
+		if (!p) return;
+		const ind = this.items.indexOf(p);
+		this.amount -= p.quantity;
+		this.items.splice(ind, 1);
+	}
 }

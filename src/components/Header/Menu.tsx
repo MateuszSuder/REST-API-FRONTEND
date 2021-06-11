@@ -65,7 +65,7 @@ export const CategoryMenu = () => {
   }, [])
 
   const changeCategory = (e: string) => {
-    handleClose();
+    handleClose()
   }
 
   return (
@@ -89,7 +89,7 @@ export const CategoryMenu = () => {
       >
 		{ cat &&
 		  cat.map(el => (
-		    <Link to={'/' + el.categoryName.toLocaleLowerCase()} className={classes.link}>
+		    <Link to={'/' + el.categoryName.toLocaleLowerCase()} onClick={handleClose} className={classes.link}>
           <StyledMenuItem value={el.categoryName} key={el.categoryName}>
             <ListItemText primary={el.categoryName} />
             <StyledMenuIcon>
