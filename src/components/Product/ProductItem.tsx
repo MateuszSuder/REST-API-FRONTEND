@@ -7,12 +7,19 @@ import {ProductInfo, ProductQuantity} from "../../services/productService";
 import React from "react";
 import {ProductAddToCart} from "./ProductAddToCart";
 import {useRootStore} from "../../context/context";
+import {Link} from "react-router-dom";
 
 export const productStyle = makeStyles((theme: Theme) =>
 	createStyles({
 		title: {
 			fontSize: "1.5rem",
-			paddingBottom: theme.spacing(1)
+			paddingBottom: theme.spacing(1),
+			textDecoration: "none",
+			color: theme.palette.text.primary,
+			"&:focus": {
+				textDecoration: "none",
+				color: theme.palette.text.primary,
+			}
 		},
 		button: {
 			width: "80%"
@@ -54,8 +61,10 @@ export const ProductItem: IReactComponent = observer(({product}: {product: Produ
 						<Grid item xs={8}>
 							{
 								product &&
-									<Typography className={prodClass.title}>
-										{product.name}
+									<Typography>
+										<Link to={'/product/' + product.id} className={prodClass.title}>
+											{product.name}
+										</Link>
 									</Typography>
 							}
 						</Grid>

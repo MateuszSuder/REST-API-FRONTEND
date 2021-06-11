@@ -96,3 +96,8 @@ export async function getUser(userID: string): Promise<User> {
     let res = await makeRequest(requestType.GET, `api/user/${userID}`) ;
     return res.json();
 }
+
+export async function deleteUser(userID: string) {
+    let res = await makeRequest(requestType.DELETE, `api/user/${userID}`) ;
+    return res.json();
+}

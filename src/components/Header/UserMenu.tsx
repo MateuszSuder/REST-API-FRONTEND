@@ -71,7 +71,7 @@ export const UserMenu = () => {
 
 	return (
 		<div>
-			<Container onMouseOver={handleClick} style={{cursor: "pointer"}}>
+			<Container onMouseOver={handleClick} style={{cursor: "pointer", textAlign: "center"}}>
 				<AccountCircleRoundedIcon htmlColor="white" />
 				<Typography>
 					{

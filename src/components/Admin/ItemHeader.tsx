@@ -2,8 +2,11 @@ import {IReactComponent} from "mobx-react/dist/types/IReactComponent";
 import {observer} from "mobx-react";
 import {theme} from "../../App";
 import {Grid, ThemeProvider, Typography} from "@material-ui/core";
-import {useLocation} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {adminItemStyles} from "../../views/Admin/AdminItem";
+import {deleteUser} from "../../services/userService";
+import {deleteProduct} from "../../services/productService";
+import {deleteCompany} from "../../services/companySevice";
 
 function useQuery() {
 	return new URLSearchParams(useLocation().search);
@@ -11,7 +14,34 @@ function useQuery() {
 
 export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => {
 	const classes = adminItemStyles();
+	const history = useHistory();
 	let query = useQuery();
+
+
+	const del = () => {
+		const id = query.get('id');
+		switch (type) {
+			case "Użytkownik": {
+				if(id) {
+					deleteUser(id);
+				}
+				break;
+			}
+			case "Produkt": {
+				if(id) {
+					deleteProduct(id);
+				}
+				break;
+			}
+			case "Firma": {
+				if(id) {
+					deleteCompany(id);
+				}
+			}
+		}
+
+		history.goBack();
+	}
 
 	return(
 		<ThemeProvider theme={theme}>
@@ -24,6 +54,10 @@ export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => 
 
 						<Grid item xs={6} className={classes.type}>
 							<Typography className={classes.type}>{type}</Typography>
+						</Grid>
+
+						<Grid item xs={6}>
+							<Typography color="error" onClick={del} style={{cursor: "pointer"}}>Usuń...</Typography>
 						</Grid>
 					</>
 					:

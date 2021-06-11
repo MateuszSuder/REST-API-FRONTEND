@@ -1,7 +1,7 @@
 import {IReactComponent} from "mobx-react/dist/types/IReactComponent";
 import {observer} from "mobx-react";
 import {theme} from "../../App";
-import {createStyles, Grid, makeStyles, Paper, Theme, ThemeProvider, Typography} from "@material-ui/core";
+import {createStyles, Fab, Grid, makeStyles, Paper, Theme, ThemeProvider, Typography} from "@material-ui/core";
 import {useRootStore} from "../../context/context";
 import {useStyles} from "../Admin/AdminList";
 import CloseIcon from '@material-ui/icons/Close';
@@ -15,7 +15,12 @@ export const cartStyles = makeStyles((theme: Theme) =>
 			marginBottom: theme.spacing(5),
 			borderBottom: "solid 1px black",
 			borderBottomColor: theme.palette.primary.main
-		}
+		},
+		fab: {
+			position: 'absolute',
+			top: theme.spacing(15),
+			right: theme.spacing(5),
+		},
 	})
 )
 
@@ -68,6 +73,9 @@ export const CartView: IReactComponent = observer(() => {
 					}
 				</Paper>
 			</Grid>
+			<Fab variant="extended" color="primary" className={cart.fab}>
+				<Typography>Zamów</Typography>
+			</Fab>
 		</ThemeProvider>
 	)
 });

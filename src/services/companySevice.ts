@@ -31,3 +31,7 @@ export async function createCompany(name: string) {
 export async function modifyCompany(id: string, name: string) {
 	return await makeRequest(requestType.POST, `api/company/${id}`, JSON.stringify({name}));
 }
+
+export async function deleteCompany(id: string) {
+	return await makeRequest(requestType.DELETE, `api/company/${id}`);
+}

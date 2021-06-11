@@ -9,9 +9,8 @@ import {ItemForm} from "./ItemForm";
 import {Model} from "../../views/Admin/AdminItem";
 import {ItemSubmit} from "./ItemSubmit";
 import {ItemSpecification} from "./ItemSpecification";
-import {createCompany, modifyCompany} from "../../services/companySevice";
-import {createProduct, getProduct} from "../../services/productService";
-import {addProductsToCategory, Category, getCategories} from "../../services/categoryService";
+import {createProduct, getProduct, modifyProduct} from "../../services/productService";
+import {addProductsToCategory, getCategories} from "../../services/categoryService";
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -146,8 +145,22 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
     }
 
     if(operation === 'modifying') {
-
-      return;
+      const id = query.get('id');
+      if(!id) throw new Error('No id found');
+      let spec = specification.filter(el => (el.key !== "" && el.val !== ""))
+      let input = {
+        name: values.name,
+        description: values.description,
+        amount: values.amount,
+        price: values.price,
+        category: values.category,
+        specification: spec
+      };
+      await modifyProduct(id, input).then(async (d) => {
+        if(!d.ok) {
+          console.error(await d.json());
+        }
+      })
     }
 
     history.goBack();
@@ -195,4 +208,4 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
       <ItemSubmit submit={onSubmit} />
     </ThemeProvider>
   )
-});
+})

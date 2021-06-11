@@ -13,6 +13,7 @@ import { AdminList } from './views/Admin/AdminList';
 import { AdminItem } from './views/Admin/AdminItem';
 import {IndexView} from "./views/Index/IndexView";
 import {CartView} from "./views/Cart/CartView";
+import {ProductMain} from "./components/Product/ProductMain";
 
 export interface props {
 	store: RootStore
@@ -60,6 +61,9 @@ const App = observer(() => {
 								</Route>
 								<Route path="/cart">
 									<CartView />
+								</Route>
+								<Route path="/product/:productID">
+									<ProductMain />
 								</Route>
 								<Route path="/:category">
 									<IndexView />

@@ -47,7 +47,7 @@ export const CartMenu = observer(() => {
 	const open = Boolean(anchorEl);
   
 	return (
-	  <Link to="/cart" className={classes.menu}>
+	  <Link to="/cart" className={classes.menu} style={{textAlign: "center"}}>
 			<Container
 			  aria-owns={open ? 'mouse-over-popover' : undefined}
 			  aria-haspopup="true"
