@@ -3,14 +3,27 @@ import {observer} from "mobx-react";
 import {theme} from "../../App";
 import {createStyles, Grid, makeStyles, Paper, Theme, ThemeProvider, Typography} from "@material-ui/core";
 import {adminItemStyles} from "../../views/Admin/AdminItem";
-import {ProductInfo} from "../../services/productService";
+import {ProductInfo, ProductQuantity} from "../../services/productService";
 import React from "react";
+import {ProductAddToCart} from "./ProductAddToCart";
+import {useRootStore} from "../../context/context";
 
 export const productStyle = makeStyles((theme: Theme) =>
 	createStyles({
 		title: {
 			fontSize: "1.5rem",
 			paddingBottom: theme.spacing(1)
+		},
+		button: {
+			width: "80%"
+		},
+		price: {
+			width: "80%",
+			fontSize: "1.5rem",
+			marginBottom: theme.spacing(2),
+			borderBottom: "1px solid black",
+			borderBottomColor: theme.palette.primary.main,
+			color: theme.palette.text.secondary
 		}
 	})
 )
@@ -18,7 +31,20 @@ export const productStyle = makeStyles((theme: Theme) =>
 export const ProductItem: IReactComponent = observer(({product}: {product: ProductInfo}) => {
 	const classes = adminItemStyles();
 	const prodClass = productStyle();
+	const store = useRootStore();
 
+	const addToCart = (p: ProductInfo | undefined) => {
+		if(!p) return;
+		if(!p.id || !p.name || !p.price) return;
+		const pr: ProductQuantity = {
+			id: p.id,
+			name: p.name,
+			price: p.price,
+			quantity: 1
+		}
+
+		store.cart.addToCart(pr)
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
@@ -33,12 +59,24 @@ export const ProductItem: IReactComponent = observer(({product}: {product: Produ
 									</Typography>
 							}
 						</Grid>
+						<Grid item xs={4}>
+							<Grid item xs={12}>
+								<Typography className={prodClass.price}>
+									{
+										(product.price / 100).toFixed(2) + " zł"
+									}
+								</Typography>
+							</Grid>
+							<Grid item xs={12}>
+								<ProductAddToCart add={() => addToCart(product)} />
+							</Grid>
+						</Grid>
 						<Grid item xs={8}>
 							{
 								product &&
 								product.specification &&
-									product.specification.map(s => (
-										<Grid container spacing={1}>
+									product.specification.slice(0, 4).map((s, i) => (
+										<Grid container spacing={1} key={i}>
 											<Grid item>
 												<Typography>
 													{

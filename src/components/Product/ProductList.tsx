@@ -40,7 +40,7 @@ export const ProductList: IReactComponent = observer(({category}: {category?: st
           <Grid container style={{marginTop: theme.spacing(2)}}>
               <Grid item xs={12}>
                   <Paper className={classes.paper}>
-	                  <Typography className={classes.categoryTitle} color="secondary">
+	                  <Typography className={classes.categoryTitle}>
 		                  {category}
 	                  </Typography>
                   </Paper>
@@ -51,8 +51,8 @@ export const ProductList: IReactComponent = observer(({category}: {category?: st
 					{
 						products &&
 						products.map((p, i) => (
-							<Grid item xs={12}>
-								<ProductItem product={p} key={i} />
+							<Grid item xs={12} key={i}>
+								<ProductItem product={p} />
 							</Grid>
 						))
 					}

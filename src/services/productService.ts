@@ -31,6 +31,12 @@ export interface ProductMinified {
     price:  number;
 }
 
+export interface ProductQuantity {
+	id: string;
+	name: string;
+	price: number;
+	quantity: number;
+}
 
 export async function getProductsInfo(q: number): Promise<ProductsInfo>{
 	let res = await makeRequest(requestType.POST, "api/product/info", JSON.stringify({quantityLowerThan: q})) ;

@@ -121,7 +121,8 @@ export const adminItemStyles = makeStyles((theme: Theme) =>
 		  textAlign: "center",
 		  fontSize: "1.5rem",
 		  margin: theme.spacing(0.25),
-		  textTransform: "capitalize"
+		  textTransform: "capitalize",
+		  color: theme.palette.secondary.dark
 	  },
 	})
 )

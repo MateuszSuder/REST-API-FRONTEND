@@ -12,6 +12,7 @@ import { RootStore } from './stores/RootStore';
 import { AdminList } from './views/Admin/AdminList';
 import { AdminItem } from './views/Admin/AdminItem';
 import {IndexView} from "./views/Index/IndexView";
+import {CartView} from "./views/Cart/CartView";
 
 export interface props {
 	store: RootStore
@@ -26,11 +27,11 @@ export const theme = createMuiTheme({
 		main: '#82b1ff',
 	  },
 	  text: {
-		  primary: "#000000",
+		  primary: "#171717",
 		  secondary: '#000000'
 	  }	
 	},
-  });
+});
 
 const App = observer(() => {
 
@@ -56,6 +57,9 @@ const App = observer(() => {
 								</Route>
 								<Route path="/admin">
 									<AdminView />
+								</Route>
+								<Route path="/cart">
+									<CartView />
 								</Route>
 								<Route path="/:category">
 									<IndexView />

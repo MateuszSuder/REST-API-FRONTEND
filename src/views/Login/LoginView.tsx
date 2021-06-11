@@ -69,13 +69,13 @@ export const LoginView = observer(({store}: props) => {
 			return;
 		}
 
-		const u: User | undefined = users.find(el => el.id == user);
+		const u: User | undefined = users.find(el => el.id === user);
 
 		if(u) {
 			store.user.setUser(u);
 		}
 		
-		history.push("/");
+		history.goBack();
 	}
 
 	return (

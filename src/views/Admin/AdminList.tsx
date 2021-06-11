@@ -11,7 +11,7 @@ import * as translation from '../../translation.json';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useRootStore } from '../../context/context';
 
-const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,

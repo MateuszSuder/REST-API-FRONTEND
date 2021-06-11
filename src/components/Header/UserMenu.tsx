@@ -93,7 +93,7 @@ export const UserMenu = () => {
 						userStore.user && userStore.user.permission === 'admin' &&
 						<Link to="/admin" style={linkStyle}>
 							<StyledMenuItem>
-								<ListItemText primary="AdminView" />
+								<ListItemText primary="Admin" />
 							</StyledMenuItem>
 						</Link>
 					}

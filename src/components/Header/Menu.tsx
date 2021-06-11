@@ -7,7 +7,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import { Category, getCategories } from '../../services/categoryService';
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
+import {useStyles} from "../../views/Admin/AdminList";
+
 
 const StyledMenu = withStyles({
   paper: {
@@ -45,6 +47,7 @@ export const CategoryMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [cat, setCat] = useState<Category[]>();
 
+  const classes = useStyles();
   let history = useHistory();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -62,7 +65,7 @@ export const CategoryMenu = () => {
   }, [])
 
   const changeCategory = (e: string) => {
-    history.push(e.toLocaleLowerCase())
+    handleClose();
   }
 
   return (
@@ -86,12 +89,14 @@ export const CategoryMenu = () => {
       >
 		{ cat &&
 		  cat.map(el => (
-				<StyledMenuItem value={el.categoryName} onClick={() => changeCategory(el.categoryName)} key={el.categoryName}>
-					<ListItemText primary={el.categoryName} />
-					<StyledMenuIcon>
-						<ArrowForwardIosIcon fontSize="small" />
-					</StyledMenuIcon>
-				</StyledMenuItem>
+		    <Link to={'/' + el.categoryName.toLocaleLowerCase()} className={classes.link}>
+          <StyledMenuItem value={el.categoryName} key={el.categoryName}>
+            <ListItemText primary={el.categoryName} />
+            <StyledMenuIcon>
+              <ArrowForwardIosIcon fontSize="small" />
+            </StyledMenuIcon>
+          </StyledMenuItem>
+        </Link>
       ))
 		}
       </StyledMenu>
