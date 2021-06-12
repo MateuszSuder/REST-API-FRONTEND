@@ -18,6 +18,7 @@ export class CartStore {
 				this.items.forEach(it => {
 					this.price += it.price * it.quantity;
 				})
+				localStorage.setItem('cart', JSON.stringify(this.items));
 			}
 		)
 	}

@@ -1,5 +1,5 @@
 import { observer, Observer } from 'mobx-react';
-import React from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import { TopBar } from './components/Header/TopBar';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -17,6 +17,8 @@ import {ProductView} from "./views/Product/ProductView";
 import {UserDetailsView} from "./views/User/UserDetailsView";
 import {OrderDelivery} from "./views/Order/OrderDelivery";
 import {Snackbars} from "./components/Snackbars";
+import {User} from "./services/userService";
+import {ProductQuantity} from "./services/productService";
 
 export interface props {
 	store: RootStore
@@ -38,6 +40,32 @@ export const theme = createMuiTheme({
 });
 
 const App = observer(() => {
+	const store = useRootStore();
+
+	useEffect(() => {
+		let u = localStorage.getItem('user');
+
+		if(u) {
+			const user = JSON.parse(u) as User;
+
+			if(user.id) {
+				store.user.setUser(user);
+			}
+		}
+
+		let c = localStorage.getItem('cart');
+
+		if(c) {
+			const cart = JSON.parse(c) as ProductQuantity[];
+
+			if(cart.length > 0) {
+				cart.forEach(item => {
+					store.cart.addToCart(item);
+				})
+			}
+		}
+
+	}, [])
 
 	return (
 		<Router>

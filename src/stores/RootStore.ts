@@ -25,11 +25,17 @@ export class RootStore {
 			return;
 		}
 
-		this.snackbarMessages.push({
+		const i = this.snackbarMessages.push({
 			message,
 			timestamp
 		});
 
-		setTimeout(() => (this.snackbarMessages = this.snackbarMessages.filter((_) => _.timestamp !== timestamp)), this.timeout + msg.length * 12.5);
+		setTimeout(() => {
+				this.removeMessage(i - 1);
+			}, this.timeout + msg.length * 12.5);
+	}
+
+	removeMessage(i: number) {
+		this.snackbarMessages.splice(i, 1)
 	}
 }

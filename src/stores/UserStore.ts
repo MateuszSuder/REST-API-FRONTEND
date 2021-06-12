@@ -12,10 +12,12 @@ export class UserStore {
 
 	setUser(u: User | undefined) {
 		this.user = u;
+		localStorage.setItem('user', JSON.stringify(this.user));
 	}
 
 	logout() {
 		this.setUser(undefined);
+		localStorage.removeItem('user');
 	}
 
 	get userLogged(): boolean {
