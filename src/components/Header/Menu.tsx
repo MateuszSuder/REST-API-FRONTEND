@@ -89,8 +89,8 @@ export const CategoryMenu = () => {
       >
 		{ cat &&
 		  cat.map(el => (
-		    <Link to={'/' + el.categoryName.toLocaleLowerCase()} onClick={handleClose} className={classes.link}>
-          <StyledMenuItem value={el.categoryName} key={el.categoryName}>
+		    <Link to={'/' + el.categoryName.toLocaleLowerCase()} onClick={handleClose} className={classes.link} key={el.categoryName}>
+          <StyledMenuItem value={el.categoryName}>
             <ListItemText primary={el.categoryName} />
             <StyledMenuIcon>
               <ArrowForwardIosIcon fontSize="small" />

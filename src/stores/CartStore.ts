@@ -1,10 +1,12 @@
 import { makeAutoObservable, reaction} from "mobx";
 import {ProductQuantity} from "../services/productService";
+import {Delivery} from "../services/userService";
 
 export class CartStore {
 	items: ProductQuantity[] = [];
 	price: number = 0;
 	amount: number = 0;
+	deliveryDetails: Delivery | undefined;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -18,8 +20,6 @@ export class CartStore {
 				})
 			}
 		)
-
-		console.log(r);
 	}
 
 	addToCart(it: ProductQuantity) {

@@ -97,7 +97,7 @@ export const UserMenu = () => {
 							</StyledMenuItem>
 						</Link>
 					}
-					<Link to="/" style={linkStyle}>
+					<Link to={"/user/" + userStore.user?.id} style={linkStyle}>
 						<StyledMenuItem>
 							<ListItemText primary="Konto" />
 						</StyledMenuItem>

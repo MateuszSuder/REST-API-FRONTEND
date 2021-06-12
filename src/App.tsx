@@ -13,7 +13,10 @@ import { AdminList } from './views/Admin/AdminList';
 import { AdminItem } from './views/Admin/AdminItem';
 import {IndexView} from "./views/Index/IndexView";
 import {CartView} from "./views/Cart/CartView";
-import {ProductMain} from "./components/Product/ProductMain";
+import {ProductView} from "./views/Product/ProductView";
+import {UserDetailsView} from "./views/User/UserDetailsView";
+import {OrderDelivery} from "./views/Order/OrderDelivery";
+import {Snackbars} from "./components/Snackbars";
 
 export interface props {
 	store: RootStore
@@ -62,13 +65,23 @@ const App = observer(() => {
 								<Route path="/cart">
 									<CartView />
 								</Route>
+								<Route path="/order/delivery">
+									<OrderDelivery />
+								</Route>
+								<Route path="/user/:id">
+									<UserDetailsView />
+								</Route>
 								<Route path="/product/:productID">
-									<ProductMain />
+									<ProductView />
 								</Route>
 								<Route path="/:category">
 									<IndexView />
 								</Route>
+								<Route path="">
+									<IndexView />
+								</Route>
 							</Switch>
+							<Snackbars />
 						</div>
 					</Route>
 				</Switch>
