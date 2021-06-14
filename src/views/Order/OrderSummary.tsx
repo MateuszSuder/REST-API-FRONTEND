@@ -77,13 +77,13 @@ export const OrderSummary: IReactComponent = observer(() => {
 							<Grid container>
 								<Grid item xs={12}>
 									<Grid container>
-										<Grid xs={8}>
+										<Grid item xs={8}>
 											<Typography variant="subtitle2" gutterBottom={true}>
 												Podsumowanie zamówienia
 											</Typography>
 										</Grid>
 
-										<Grid xs={4}>
+										<Grid item xs={4}>
 											<Typography variant="subtitle2" gutterBottom={true} align="center">
 												Adres dostawy
 											</Typography>

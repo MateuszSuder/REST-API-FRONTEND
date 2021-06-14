@@ -15,7 +15,8 @@ export const productStyle = makeStyles((theme: Theme) =>
 			fontSize: "1.5rem",
 			paddingBottom: theme.spacing(1),
 			textDecoration: "none",
-			color: theme.palette.text.primary,
+			color: theme.palette.primary.light,
+			textDecorationLine: "underline",
 			"&:focus": {
 				textDecoration: "none",
 				color: theme.palette.text.primary,
@@ -38,7 +39,7 @@ export const productStyle = makeStyles((theme: Theme) =>
 export const ProductItem: IReactComponent = observer(({product}: {product: ProductInfo}) => {
 	const classes = adminItemStyles();
 	const prodClass = productStyle();
-	const store = useRootStore();
+	const store = useRootStore()
 
 	const addToCart = (p: ProductInfo | undefined) => {
 		if(!p) return;

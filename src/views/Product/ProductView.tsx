@@ -40,6 +40,7 @@ export const s = makeStyles((theme: Theme) =>
 export const ProductView: IReactComponent = observer(() => {
 	const [product, setProduct] = useState<ProductInfo | null>(null);
 	const [category, setCategory] = useState<String | null>(null);
+	const [amountAvailable, setAmount] = useState(0);
 	const [quantity, setQuantity] = useState<number>(1);
 
 	const st = s();
@@ -49,10 +50,17 @@ export const ProductView: IReactComponent = observer(() => {
 	useEffect(() => {
 		getProduct(productID).then(p => {
 			setProduct(p.product);
+			setAmount(p.product.amount);
 			if(p.category)
 			setCategory(p.category);
+
+			adjustQuantity();
 		})
 	}, [])
+
+	useEffect(() => {
+		adjustQuantity();
+	}, [quantity])
 
 	const addToCart = (p: ProductInfo | undefined) => {
 		if(!p) return;
@@ -64,7 +72,24 @@ export const ProductView: IReactComponent = observer(() => {
 			quantity: quantity
 		}
 
-		store.cart.addToCart(pr)
+		store.cart.addToCart(pr);
+		adjustQuantity();
+	}
+
+	const adjustQuantity = () => {
+		for(const p of store.cart.items) {
+			if(p.id === productID) {
+				let am = 0;
+				if(product && product.amount) {
+					am = product.amount - p.quantity;
+				}
+				setAmount(am);
+
+				if(quantity >= am) {
+					setQuantity(am);
+				}
+			}
+		}
 	}
 
 	return (
@@ -96,7 +121,7 @@ export const ProductView: IReactComponent = observer(() => {
 											{
 												product &&
 												product.specification &&
-												product.specification.slice(0, 4).map((s, i) => (
+												product.specification.map((s, i) => (
 													<Grid container spacing={1} key={i}>
 														<Grid item>
 															<Typography>
@@ -128,24 +153,24 @@ export const ProductView: IReactComponent = observer(() => {
 
 								<Grid item xs={6}>
 									<Grid container justify="center">
-										<Grid className={st.quantity} style={{cursor: "pointer"}} onClick={() => quantity !== 1 && setQuantity(quantity - 1)}>
+										<Grid className={st.quantity} style={{cursor: "pointer"}} onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
                         <RemoveIcon />
 										</Grid>
 										<Grid className={st.quantity}>
                         <Typography variant="h6">{quantity}</Typography>
 										</Grid>
-										<Grid className={st.quantity} style={{cursor: "pointer"}} onClick={() => quantity !== product?.amount && setQuantity(quantity + 1)}>
+										<Grid className={st.quantity} style={{cursor: "pointer"}} onClick={() => quantity !== amountAvailable && setQuantity(quantity + 1)}>
                         <AddIcon />
 										</Grid>
-										<Grid xs={12} />
-										<Grid xs={8} className={st.quantity}>
+										<Grid item xs={12} />
+										<Grid item xs={8} className={st.quantity}>
 											{
 												product.amount &&
-													'Dostępna ilość: ' + product.amount
+													'Dostępna ilość: ' + amountAvailable
 											}
 										</Grid>
-										<Grid xs={12} className={st.quantity}>
-												<ProductAddToCart add={() => addToCart(product)} />
+										<Grid item xs={12} className={st.quantity}>
+												<ProductAddToCart dis={amountAvailable === 0} add={() => addToCart(product)} />
 										</Grid>
 									</Grid>
 								</Grid>
