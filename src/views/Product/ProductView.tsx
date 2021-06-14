@@ -53,14 +53,16 @@ export const ProductView: IReactComponent = observer(() => {
 			setAmount(p.product.amount);
 			if(p.category)
 			setCategory(p.category);
-
-			adjustQuantity();
 		})
 	}, [])
 
 	useEffect(() => {
 		adjustQuantity();
-	}, [quantity, product])
+	}, [amountAvailable])
+
+	useEffect(() => {
+		console.log(amountAvailable);
+	}, [amountAvailable])
 
 	const addToCart = (p: ProductInfo | undefined) => {
 		if(!p) return;
@@ -83,7 +85,7 @@ export const ProductView: IReactComponent = observer(() => {
 				if(product && product.amount) {
 					am = product.amount - p.quantity;
 				}
-				console.log("am", am);
+				console.log("am: ", am);
 				setAmount(am);
 
 				if(quantity === am) {
@@ -96,13 +98,6 @@ export const ProductView: IReactComponent = observer(() => {
 	return (
 		<ThemeProvider theme = {theme} >
 			<Grid container justify="center" className={st.grid}>
-				<Grid item xs={12}>
-					<Typography variant="h6" color="primary" className={st.category}>
-						{
-							category
-						}
-					</Typography>
-				</Grid>
 				<Paper className={st.main}>
 					<Grid container>
 						{
