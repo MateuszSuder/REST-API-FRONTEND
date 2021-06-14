@@ -49,7 +49,7 @@ export async function getProducts(): Promise<ProductInfo[]>{
 }
 
 export async function getProductsMinified(): Promise<ProductMinified[]>{
-	let res = await makeRequest(requestType.GET, "api/product/v2");
+	let res = await makeRequest(requestType.GET, "api/product/v2/products");
 	return res.json();
 }
 
