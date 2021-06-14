@@ -103,19 +103,19 @@ export const CartView: IReactComponent = observer(() => {
 					<Grid item xs={4}>
 						<Paper style={{justifyContent: "center", margin: "auto"}}>
 							<Grid container className={cart.summary}>
-								<Grid xs={6} className={cart.center}>
+								<Grid item xs={6} className={cart.center}>
 									<Typography>
 										Do zapłaty
 									</Typography>
 								</Grid>
-								<Grid xs={6}>
+								<Grid item xs={6}>
 									<Typography align="right" variant="h5">
 										{
 											(store.cart.price / 100).toFixed(2) + " zł"
 										}
 									</Typography>
 								</Grid>
-								<Grid item xs={12} justify="center" className={cart.buttonContainer}>
+								<Grid item xs={12} className={cart.buttonContainer}>
 									<Link to={'/order/delivery'}>
 										<Button variant="contained" color="primary" disabled={!store.user.userLogged || store.cart.items.length === 0}>
 											Wybierz sposób dostawy

@@ -18,6 +18,8 @@ export class UserStore {
 	logout() {
 		this.setUser(undefined);
 		localStorage.removeItem('user');
+		localStorage.removeItem('delivery');
+		localStorage.removeItem('cart');
 	}
 
 	get userLogged(): boolean {

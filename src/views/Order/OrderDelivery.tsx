@@ -21,10 +21,6 @@ export const OrderDelivery: IReactComponent = observer(() => {
 	const classes = adminItemStyles();
 	const history = useHistory();
 
-	const onSubmit = () => {
-		history.replace('/order/summary');
-	}
-
 	const m: Model = {
 		create: [],
 		modify: [
@@ -126,6 +122,13 @@ export const OrderDelivery: IReactComponent = observer(() => {
 	useEffect(() => {
 		const id = store.user.user && store.user.user.id;
 		if(!id) return;
+		if(store.cart.deliveryDetails) {
+			setValues({
+				...values,
+				deliveryDetails: store.cart.deliveryDetails
+			})
+			return;
+		}
 		getUser(id).then(r => {
 			setValues({
 				...values,
@@ -133,6 +136,12 @@ export const OrderDelivery: IReactComponent = observer(() => {
 			})
 		})
 	}, [])
+
+	const onSubmit = () => {
+		store.cart.setDelivery(values.deliveryDetails);
+		history.push('/order/summary');
+	}
+
 
 	return (
 		<ThemeProvider theme={theme}>

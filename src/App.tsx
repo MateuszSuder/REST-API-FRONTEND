@@ -17,8 +17,9 @@ import {ProductView} from "./views/Product/ProductView";
 import {UserDetailsView} from "./views/User/UserDetailsView";
 import {OrderDelivery} from "./views/Order/OrderDelivery";
 import {Snackbars} from "./components/Snackbars";
-import {User} from "./services/userService";
+import {Delivery, User} from "./services/userService";
 import {ProductQuantity} from "./services/productService";
+import {OrderSummary} from "./views/Order/OrderSummary";
 
 export interface props {
 	store: RootStore
@@ -51,6 +52,8 @@ const App = observer(() => {
 			if(user.id) {
 				store.user.setUser(user);
 			}
+		} else {
+			return;
 		}
 
 		let c = localStorage.getItem('cart');
@@ -63,6 +66,14 @@ const App = observer(() => {
 					store.cart.addToCart(item);
 				})
 			}
+		}
+
+		let d = localStorage.getItem('delivery');
+
+		if(d) {
+			const delivery = JSON.parse(d) as Delivery;
+
+			store.cart.setDelivery(delivery);
 		}
 
 	}, [])
@@ -95,6 +106,9 @@ const App = observer(() => {
 								</Route>
 								<Route path="/order/delivery">
 									<OrderDelivery />
+								</Route>
+								<Route path="/order/summary">
+									<OrderSummary />
 								</Route>
 								<Route path="/user/:id">
 									<UserDetailsView />

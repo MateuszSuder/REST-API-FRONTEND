@@ -43,4 +43,9 @@ export class CartStore {
 		this.amount -= p.quantity;
 		this.items.splice(ind, 1);
 	}
+
+	setDelivery(d: Delivery) {
+		this.deliveryDetails = d;
+		localStorage.setItem('delivery', JSON.stringify(this.deliveryDetails));
+	}
 }
