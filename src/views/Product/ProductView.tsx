@@ -60,7 +60,7 @@ export const ProductView: IReactComponent = observer(() => {
 
 	useEffect(() => {
 		adjustQuantity();
-	}, [quantity])
+	}, [quantity, product])
 
 	const addToCart = (p: ProductInfo | undefined) => {
 		if(!p) return;
@@ -83,9 +83,10 @@ export const ProductView: IReactComponent = observer(() => {
 				if(product && product.amount) {
 					am = product.amount - p.quantity;
 				}
+				console.log("am", am);
 				setAmount(am);
 
-				if(quantity >= am) {
+				if(quantity === am) {
 					setQuantity(am);
 				}
 			}
@@ -153,6 +154,13 @@ export const ProductView: IReactComponent = observer(() => {
 
 								<Grid item xs={6}>
 									<Grid container justify="center">
+                    <Grid item xs={12}>
+	                    <Typography align="center" variant="h6" color="secondary">
+		                    {
+			                    (product.price / 100).toFixed(2) + " zł"
+		                    }
+	                    </Typography>
+                    </Grid>
 										<Grid className={st.quantity} style={{cursor: "pointer"}} onClick={() => quantity > 1 && setQuantity(quantity - 1)}>
                         <RemoveIcon />
 										</Grid>
