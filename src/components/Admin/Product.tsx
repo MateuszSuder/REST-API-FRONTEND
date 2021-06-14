@@ -62,7 +62,7 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
             options: categories
           },
           {
-            label: "Cena",
+            label: "Cena (w groszach)",
             required: true,
             value: values.price,
             setValue: (v: React.ChangeEvent<HTMLInputElement>) => setValues({...values, 'price': parseFloat(v.target.value)}),

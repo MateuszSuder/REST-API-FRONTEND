@@ -1,7 +1,7 @@
 import {IReactComponent} from "mobx-react/dist/types/IReactComponent";
 import {observer} from "mobx-react";
 import {theme} from "../../App";
-import {Container, Divider, Grid, Paper, ThemeProvider, Typography} from "@material-ui/core";
+import {Button, Container, Divider, Grid, Paper, ThemeProvider, Typography} from "@material-ui/core";
 import React from "react";
 import {adminItemStyles} from "../Admin/AdminItem";
 import {useRootStore} from "../../context/context";
@@ -68,6 +68,10 @@ export const OrderSummary: IReactComponent = observer(() => {
 	const classes = adminItemStyles();
 	const store = useRootStore();
 
+	const submitOrder = () => {
+
+	}
+
 	return (
 		<ThemeProvider theme={theme}>
 			<Container>
@@ -115,6 +119,19 @@ export const OrderSummary: IReactComponent = observer(() => {
 													}
 												</Grid>
 											</Grid>
+											<Grid item xs={12}>
+												<Divider />
+												<Grid container>
+													<Grid item xs={9} />
+													<Grid item xs={3}>
+														<Typography variant="body2">
+															{
+																(store.cart.price / 100).toFixed(2) + " zł"
+															}
+														</Typography>
+													</Grid>
+												</Grid>
+											</Grid>
 										</Grid>
 										<Grid item xs={4}>
 											<SummaryDelivery d={store.cart.deliveryDetails || store.user.user?.deliverDetails} />
@@ -128,6 +145,11 @@ export const OrderSummary: IReactComponent = observer(() => {
 								</Grid>
 							</Grid>
 						</Paper>
+					</Grid>
+					<Grid item xs={12}>
+						<Grid container justify="flex-end">
+							<Button variant={"contained"} color={"primary"} onClick={submitOrder}>Potwierdź zamówienie</Button>
+						</Grid>
 					</Grid>
 				</Grid>
 			</Container>
