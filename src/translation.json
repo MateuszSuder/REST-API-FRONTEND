@@ -1,0 +1,15 @@
+{
+	"primary": {
+		"lastStatus": "aktualny status",
+		"price": "cena",
+		"name": "nazwa",
+		"amount": "ilość",
+		"companyName": "nazwa firmy",
+		"permission": "prawa",
+		"username": "nazwa użytkownika",
+		"Ordered": "zamówione",
+		"PaymentDone": "opłacone",
+		"Shipped": "wysłane",
+		"Delivered": "dostarczone"
+	}
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Menu, { MenuProps } from '@material-ui/core/Menu';
@@ -6,7 +6,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import makeRequest, { requestType } from '../services/fetcher';
+import { Category, getCategories } from '../../services/categoryService';
+import {useHistory, Link} from "react-router-dom";
+import {useStyles} from "../../views/Admin/AdminList";
+
 
 const StyledMenu = withStyles({
   paper: {
@@ -42,6 +45,10 @@ const StyledMenuIcon = withStyles((theme) => ({
 
 export const CategoryMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [cat, setCat] = useState<Category[]>();
+
+  const classes = useStyles();
+  let history = useHistory();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -51,16 +58,15 @@ export const CategoryMenu = () => {
     setAnchorEl(null);
   };
 
-  let categories: Array<string> = [];
-
   React.useEffect(() => {
-	async function getCategories() {
-		const res = await makeRequest(requestType.GET, "api/category") as Array<string>;
-		categories = res;
-		return categories;
-	}
-	getCategories();
+    getCategories().then(res => {
+      setCat(res);
+    })
   }, [])
+
+  const changeCategory = (e: string) => {
+    handleClose()
+  }
 
   return (
     <div>
@@ -73,6 +79,7 @@ export const CategoryMenu = () => {
       >
         Kategorie
       </Button>
+	  	
       <StyledMenu
         id="customized-menu"
         anchorEl={anchorEl}
@@ -80,24 +87,18 @@ export const CategoryMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <StyledMenuItem>
-          <ListItemText primary="Kategoria 1" />
-		  <StyledMenuIcon>
-            <ArrowForwardIosIcon fontSize="small" />
-          </StyledMenuIcon>
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemText primary="Kategoria 2" />
-		  <StyledMenuIcon>
-            <ArrowForwardIosIcon fontSize="small" />
-          </StyledMenuIcon>
-        </StyledMenuItem>
-        <StyledMenuItem>
-          <ListItemText primary="Kategoria 3" />
-		  <StyledMenuIcon>
-            <ArrowForwardIosIcon fontSize="small" />
-          </StyledMenuIcon>
-        </StyledMenuItem>
+		{ cat &&
+		  cat.map(el => (
+		    <Link to={'/' + el.categoryName.toLocaleLowerCase()} onClick={handleClose} className={classes.link} key={el.categoryName}>
+          <StyledMenuItem value={el.categoryName}>
+            <ListItemText primary={el.categoryName} />
+            <StyledMenuIcon>
+              <ArrowForwardIosIcon fontSize="small" />
+            </StyledMenuIcon>
+          </StyledMenuItem>
+        </Link>
+      ))
+		}
       </StyledMenu>
     </div>
   );

@@ -1,3 +1,9 @@
+export enum inputType {
+	text,
+	number,
+	select
+}
+
 export enum requestType {
 	GET = "GET",
 	POST = "POST",
@@ -16,5 +22,5 @@ export default async function makeRequest(request: requestType, path: string, bo
 		body: body
 	})
 
-	return r.json();
+	return r;
 }
