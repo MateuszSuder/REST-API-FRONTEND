@@ -20,6 +20,7 @@ import {Snackbars} from "./components/Snackbars";
 import {Delivery, User} from "./services/userService";
 import {ProductQuantity} from "./services/productService";
 import {OrderSummary} from "./views/Order/OrderSummary";
+import {UserOrdersView} from "./views/User/UserOrdersView";
 
 export interface props {
 	store: RootStore
@@ -107,8 +108,14 @@ const App = observer(() => {
 								<Route path="/order/delivery">
 									<OrderDelivery />
 								</Route>
+								<Route path="/order/summary/:id">
+									<OrderSummary />
+								</Route>
 								<Route path="/order/summary">
 									<OrderSummary />
+								</Route>
+								<Route path="/user/:id/orders">
+									<UserOrdersView />
 								</Route>
 								<Route path="/user/:id">
 									<UserDetailsView />

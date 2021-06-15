@@ -30,6 +30,13 @@ export class CartStore {
 		)
 	}
 
+	resetCart() {
+		this.items = [];
+		this.price = 0;
+		this.amount = 0;
+		this.deliveryDetails = undefined;
+	}
+
 	addToCart(it: ProductQuantity) {
 		const p = this.items.find(e => e.id === it.id);
 		if(p) {
@@ -83,5 +90,7 @@ export class CartStore {
 			}
 			throw r;
 		})
+
+		this.resetCart();
 	}
 }

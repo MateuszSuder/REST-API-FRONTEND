@@ -35,7 +35,7 @@ export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => 
 			}
 			case "Firma": {
 				if(id) {
-					deleteCompany(id);
+					deleteCompany(id)
 				}
 			}
 		}
@@ -57,7 +57,10 @@ export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => 
 						</Grid>
 
 						<Grid item xs={6}>
-							<Typography color="error" onClick={del} style={{cursor: "pointer"}}>Usuń...</Typography>
+							{
+								type !== "Zamówienie" &&
+								<Typography color="error" onClick={del} style={{cursor: "pointer"}}>Usuń...</Typography>
+							}
 						</Grid>
 					</>
 					:

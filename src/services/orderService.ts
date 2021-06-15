@@ -40,10 +40,10 @@ export interface Status {
 }
 
 export enum OrderStatus {
-	Ordered,
-	PaymentDone,
-	Shipped,
-	Delivered
+	Ordered = "Ordered",
+	PaymentDone = "PaymentDone",
+	Shipped = "Shipped",
+	Delivered = "Delivered"
 }
 
 
@@ -59,6 +59,16 @@ export async function getOrdersMinified(): Promise<OrderMinified[]>{
 
 export async function getOrder(orderID: string): Promise<OrderType> {
 	let res = await makeRequest(requestType.GET, `api/order/${orderID}`) ;
+	return res.json();
+}
+
+export async function getUserOrders(userID: string): Promise<OrderType[]> {
+	let res = await makeRequest(requestType.GET, `api/user/${userID}/order`) ;
+	return res.json();
+}
+
+export async function changeOrderStatus(orderID: string, status: OrderStatus){
+	let res = await makeRequest(requestType.POST, `api/order/${orderID}`, JSON.stringify({status: status})) ;
 	return res.json();
 }
 

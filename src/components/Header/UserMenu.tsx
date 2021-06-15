@@ -25,22 +25,22 @@ const StyledMenu = withStyles({
   ));
   
   const StyledMenuItem = withStyles((theme) => ({
-	root: {	
-	  justifyContent: "space-between",
-	  height: "24px",
-	  paddingTop: "18px",
-	  paddingBottom: "18px",
-	},
+		root: {
+		  justifyContent: "space-between",
+		  height: "24px",
+		  paddingTop: "18px",
+		  paddingBottom: "18px",
+		},
   }))(MenuItem);
 
   const linkStyle = {
-	textDecoration: 'none', 
-	display: 'block', 
-	color: 'black',
-	':visited': {
 		textDecoration: 'none',
-		color: 'black'
-	}
+		display: 'block',
+		color: 'black',
+		':visited': {
+			textDecoration: 'none',
+			color: 'black'
+		}
   }
 
   
@@ -58,8 +58,6 @@ export const UserMenu = () => {
 	const logout = () => {
 		userStore.logout();
 	}
-
-
 
 	const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
 		setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -102,7 +100,7 @@ export const UserMenu = () => {
 							<ListItemText primary="Konto" />
 						</StyledMenuItem>
 					</Link>
-					<Link to="/" style={linkStyle}>
+					<Link to={"/user/" + userStore.user?.id + "/orders"} style={linkStyle}>
 						<StyledMenuItem>
 							<ListItemText primary="Zamówienia" />
 						</StyledMenuItem>
