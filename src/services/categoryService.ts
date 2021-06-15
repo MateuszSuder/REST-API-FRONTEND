@@ -25,7 +25,7 @@ export async function getProductsFromCategory(category: string): Promise<Product
 }
 
 export async function addNewCategory(category: string) {
-	let res = await makeRequest(requestType.GET, "api/category", JSON.stringify({categoryName: category})) ;
+	let res = await makeRequest(requestType.POST, "api/category", JSON.stringify({categoryName: category})) ;
 	return res.json();
 }
 

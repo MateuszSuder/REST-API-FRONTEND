@@ -16,6 +16,7 @@ import {
 } from "@material-ui/core";
 import React, {useState} from "react";
 import { Button } from "@material-ui/core";
+import {addNewCategory} from "../../services/categoryService";
 
 export const st = makeStyles((theme: Theme) =>
 	createStyles({
@@ -38,6 +39,11 @@ export const AddCategory: IReactComponent = observer(() => {
 		setCategoryName(event.target.value as string);
 	}
 
+	const add = () => {
+		if(categoryName.length > 3)
+		addNewCategory(categoryName)
+	}
+
 	return (
 		<ThemeProvider theme={theme}>
 			<TextField
@@ -46,7 +52,7 @@ export const AddCategory: IReactComponent = observer(() => {
 				onChange={handleChange}
 				className={c.input}
 			/>
-			<Button className={c.button} variant="contained" color="primary">Dodaj nową kategorię</Button>
+			<Button className={c.button} variant="contained" color="primary" onClick={add}>Dodaj nową kategorię</Button>
 		</ThemeProvider>
 	)
 });

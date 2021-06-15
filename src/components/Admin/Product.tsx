@@ -175,11 +175,11 @@ export const Product: IReactComponent = observer(({operation}: {operation: 'crea
 
   useEffect(() => {
     getCategories().then(data => {
+      const temp = [{label: "Brak", value: ""}];
       data.forEach(c => {
-        const temp = [{label: "Brak", value: ""}];
         temp.push({label: c.categoryName, value: c.categoryName})
-        setCategories(temp);
       })
+      setCategories(temp);
     })
 
     if (operation === 'modifying') {
