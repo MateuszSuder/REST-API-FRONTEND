@@ -11,6 +11,7 @@ import {ItemSubmit} from "./ItemSubmit";
 import {ItemSpecification} from "./ItemSpecification";
 import {createProduct, getProduct, modifyProduct} from "../../services/productService";
 import {addProductsToCategory, getCategories} from "../../services/categoryService";
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }

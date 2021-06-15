@@ -170,7 +170,7 @@ export const AdminItem: IReactComponent = observer(() => {
 					setOperation(query.get('id') ? 'modifying' : 'creating');
 					break;
 				}
-				case 'Order': {
+				case 'orders': {
 					setType(Type.Order);
 					setOperation(query.get('id') ? 'modifying' : 'creating');
 					break;

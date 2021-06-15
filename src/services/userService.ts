@@ -1,6 +1,7 @@
 import {CompanyInfo} from "./companySevice";
 import makeRequest, {requestType} from "./fetcher";
 import {ProductInfo} from "./productService";
+import {OrderType} from "./orderService";
 
 export interface UserModifyInput {
     companyID?:      string;
@@ -12,7 +13,7 @@ export interface User {
     company:        CompanyInfo;
     deliverDetails: Delivery;
     id:             string;
-    orders:         Order[];
+    orders:         OrderType[];
     permission:     string;
     username:       string;
 }
@@ -31,15 +32,6 @@ export interface Address {
     street:   string;
 }
 
-export interface Order {
-    delivery: Delivery;
-    id:       string;
-    items:    Item[];
-    price:    number;
-    status:   Status[];
-    userID:   string;
-}
-
 export interface Item {
     product:  ProductInfo;
     quantity: number;
@@ -48,11 +40,6 @@ export interface Item {
 export interface Specification {
     key: string;
     val: string;
-}
-
-export interface Status {
-    date:   Date;
-    status: string;
 }
 
 export interface UserInfo {

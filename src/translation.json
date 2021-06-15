@@ -6,6 +6,10 @@
 		"amount": "ilość",
 		"companyName": "nazwa firmy",
 		"permission": "prawa",
-		"username": "nazwa użytkownika"
+		"username": "nazwa użytkownika",
+		"Ordered": "zamówione",
+		"PaymentDone": "opłacone",
+		"Shipped": "wysłane",
+		"Delivered": "dostarczone"
 	}
 }

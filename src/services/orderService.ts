@@ -1,5 +1,14 @@
 import makeRequest, { requestType } from "./fetcher";
-import {Delivery} from "./userService";
+import {Delivery, Item} from "./userService";
+
+export interface OrderType {
+	delivery: Delivery;
+	id:       string;
+	items:    Item[];
+	price:    number;
+	status:   Status[];
+	userID:   string;
+}
 
 export interface OrdersInfo {
 	delivered: number,
@@ -7,7 +16,6 @@ export interface OrdersInfo {
 	shipped: number,
 	waitingForPayment: number
 }
-
 
 export interface OrderMinified {
     id:         string;
@@ -26,6 +34,19 @@ export interface OrderInput {
 	userID: string
 }
 
+export interface Status {
+	date:   Date;
+	status: OrderStatus;
+}
+
+export enum OrderStatus {
+	Ordered,
+	PaymentDone,
+	Shipped,
+	Delivered
+}
+
+
 export async function getOrdersInfo(): Promise<OrdersInfo>{
 	let res = await makeRequest(requestType.GET, "api/order/info") ;
 	return res.json();
@@ -36,7 +57,12 @@ export async function getOrdersMinified(): Promise<OrderMinified[]>{
 	return res.json();
 }
 
-export async function placeOrder(input: OrderInput) {
+export async function getOrder(orderID: string): Promise<OrderType> {
+	let res = await makeRequest(requestType.GET, `api/order/${orderID}`) ;
+	return res.json();
+}
+
+export async function placeOrder(input: OrderInput){
 	let res = await makeRequest(requestType.POST, "api/order", JSON.stringify(input)) ;
 	return res.json();
 }

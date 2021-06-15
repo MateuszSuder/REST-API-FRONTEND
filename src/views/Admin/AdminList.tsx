@@ -133,7 +133,7 @@ export const AdminList: IReactComponent = observer(() => {
 											Object.entries(el).map((e, i) => {
 												if(e[0] !== "id" && e[0] && e[1]) {
 													return (
-														<Typography key={i} className={classes.values}>{translate(e[0]) + ": " + (e[0] === "price" ? (e[1] / 100).toFixed(2) + " zł" : e[1])}</Typography>
+														<Typography key={i} className={classes.values}>{translate(e[0]) + ": " + (e[0] === "price" ? (e[1] / 100).toFixed(2) + " zł" : translate(e[1]))}</Typography>
 													)
 												}
 											})

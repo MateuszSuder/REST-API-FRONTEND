@@ -7,6 +7,7 @@ import {adminItemStyles} from "../Admin/AdminItem";
 import {useRootStore} from "../../context/context";
 import {Delivery} from "../../services/userService";
 import {Link} from "react-router-dom"
+import {OrderType} from "../../services/orderService";
 
 const SummaryTitle = ({name}: {name: string | number}) => {
 	return (
@@ -64,7 +65,7 @@ const SummaryDelivery = ({d}: {d: Delivery | undefined}) => {
 	)
 }
 
-export const OrderSummary: IReactComponent = observer(() => {
+export const OrderSummary: IReactComponent = observer(({order}: {order?: OrderType}) => {
 	const classes = adminItemStyles();
 	const store = useRootStore();
 
@@ -111,13 +112,13 @@ export const OrderSummary: IReactComponent = observer(() => {
 											<Grid item xs={12}>
 												<Grid container>
 													{
-														store.cart.items.map((item, i)=> (
+														(order ? order.items : store.cart.items).map((item, i)=> (
 
 															<React.Fragment key={i}>
-																<SummaryItem name={item.name} />
+																<SummaryItem name={'product' in item ? item.product.name : item.name} />
 																<SummaryItem name={item.quantity} />
-																<SummaryItem name={(item.price / 100).toFixed(2) + " zł"} />
-																<SummaryItem name={(item.price * item.quantity / 100).toFixed(2) + " zł"} />
+																<SummaryItem name={(('product' in item ? item.product.price : item.price) / 100).toFixed(2) + " zł"} />
+																<SummaryItem name={(('product' in item ? item.product.price : item.price) * item.quantity / 100).toFixed(2) + " zł"} />
 															</React.Fragment>
 														))
 													}
@@ -139,22 +140,28 @@ export const OrderSummary: IReactComponent = observer(() => {
 										</Grid>
 										<Grid item xs={4}>
 											<SummaryDelivery d={store.cart.deliveryDetails || store.user.user?.deliverDetails} />
-											<Link to="/order/delivery">
-												<Typography align="right" variant="body2" color="primary">
-													Zmień...
-												</Typography>
-											</Link>
+											{
+												!order &&
+                        <Link to="/order/delivery">
+                            <Typography align="right" variant="body2" color="primary">
+                                Zmień...
+                            </Typography>
+                        </Link>
+											}
 										</Grid>
 									</Grid>
 								</Grid>
 							</Grid>
 						</Paper>
 					</Grid>
-					<Grid item xs={12}>
-						<Grid container justify="flex-end">
-							<Button variant={"contained"} color={"primary"} onClick={submitOrder}>Potwierdź zamówienie</Button>
-						</Grid>
-					</Grid>
+					{
+						!order &&
+	          <Grid item xs={12}>
+	              <Grid container justify="flex-end">
+	                  <Button variant={"contained"} color={"primary"} onClick={submitOrder}>Potwierdź zamówienie</Button>
+	              </Grid>
+	          </Grid>
+					}
 				</Grid>
 			</Container>
 		</ThemeProvider>
