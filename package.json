@@ -1,4 +1,5 @@
 {
+  "homepage": "http://MateuszSuder.github.io/REST-API-FRONTEND",
   "name": "rest-api-frontend",
   "version": "0.1.0",
   "private": true,
@@ -6,6 +7,7 @@
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
+    "gh-pages": "^3.2.1",
     "material-ui-popup-state": "^1.8.3",
     "mobx": "^6.3.2",
     "mobx-react": "^7.2.0",
@@ -23,7 +25,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint \"**/*.{ts,tsx}\" --quiet --fix"
+    "lint": "eslint \"**/*.{ts,tsx}\" --quiet --fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
