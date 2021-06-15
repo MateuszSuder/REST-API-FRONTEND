@@ -1,15 +1,22 @@
 import { makeAutoObservable, reaction} from "mobx";
 import {ProductQuantity} from "../services/productService";
 import {Delivery} from "../services/userService";
+import {RootStore} from "./RootStore";
+import {placeOrder} from "../services/orderService";
 
 export class CartStore {
+	store: RootStore;
+
 	items: ProductQuantity[] = [];
 	price: number = 0;
 	amount: number = 0;
 	deliveryDetails: Delivery | undefined;
 
-	constructor() {
+
+	constructor(s: RootStore) {
 		makeAutoObservable(this);
+
+		this.store = s;
 
 		const r = reaction(
 			() => this.amount,
@@ -47,5 +54,34 @@ export class CartStore {
 	setDelivery(d: Delivery) {
 		this.deliveryDetails = d;
 		localStorage.setItem('delivery', JSON.stringify(this.deliveryDetails));
+	}
+
+	async placeOrder() {
+		if(!this.store.user.user || !this.store.user.user.id) {
+			throw new Error('User not logged in');
+		}
+
+		if(!this.deliveryDetails) {
+			throw new Error('Delivery details not found');
+		}
+
+		const productInput = this.items.map(it => ({productID: it.id, quantity: it.quantity}))
+
+		if(productInput.length === 0) {
+			throw new Error('No items found in cart');
+		}
+
+		const input = {
+			delivery: this.deliveryDetails,
+			items: productInput,
+			userID: this.store.user.user.id
+		}
+
+		placeOrder(input).then(async r => {
+			if(r.ok) {
+				return r
+			}
+			throw r;
+		})
 	}
 }

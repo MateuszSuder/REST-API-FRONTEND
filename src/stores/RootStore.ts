@@ -12,7 +12,7 @@ export class RootStore {
 
 	constructor() {
 		this.user = new UserStore();
-		this.cart = new CartStore();
+		this.cart = new CartStore(this);
 
 		makeAutoObservable(this);
 	}

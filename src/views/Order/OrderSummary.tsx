@@ -69,7 +69,11 @@ export const OrderSummary: IReactComponent = observer(() => {
 	const store = useRootStore();
 
 	const submitOrder = () => {
-
+		try {
+			store.cart.placeOrder().then(r => r);
+		} catch (e) {
+			console.error(e);
+		}
 	}
 
 	return (
