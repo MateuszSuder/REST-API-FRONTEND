@@ -15,7 +15,6 @@ function useQuery() {
 }
 
 export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => {
-	const [open, setOpen] = useState(false);
 	const classes = adminItemStyles();
 	const history = useHistory();
 	let query = useQuery();
@@ -48,7 +47,6 @@ export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => 
 
 	return(
 		<ThemeProvider theme={theme}>
-			<AddCategory open={open} />
 			{
 				query.get('id') ?
 					<>
@@ -64,12 +62,6 @@ export const ItemHeader: IReactComponent = observer(({type}: {type: string}) => 
 							{
 								type !== "Zamówienie" &&
 								<Typography color="error" onClick={del} style={{cursor: "pointer"}}>Usuń...</Typography>
-							}
-						</Grid>
-						<Grid item xs={6}>
-							{
-								type === "Produkt" &&
-                <Typography color="primary" onClick={() => setOpen(true)} style={{cursor: "pointer"}}>Dodaj kategorie...</Typography>
 							}
 						</Grid>
 					</>

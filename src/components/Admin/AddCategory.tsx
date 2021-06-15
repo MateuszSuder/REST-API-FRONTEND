@@ -19,21 +19,34 @@ import { Button } from "@material-ui/core";
 
 export const st = makeStyles((theme: Theme) =>
 	createStyles({
-		popup: {
-			padding: theme.spacing(4,4,4,4)
+		input: {
+			margin: theme.spacing(1),
+			width: "25%"
+		},
+		button: {
+			margin: theme.spacing(2),
 		}
 	})
 )
 
-export const AddCategory: IReactComponent = observer(({open}: {open: boolean}) => {
+export const AddCategory: IReactComponent = observer(() => {
 	const [categoryName, setCategoryName] = useState("")
 
 	const c = st();
 
+	const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+		setCategoryName(event.target.value as string);
+	}
 
 	return (
 		<ThemeProvider theme={theme}>
-
+			<TextField
+				label="Dodaj kategorie"
+				value={categoryName}
+				onChange={handleChange}
+				className={c.input}
+			/>
+			<Button className={c.button} variant="contained" color="primary">Dodaj nową kategorię</Button>
 		</ThemeProvider>
 	)
 });

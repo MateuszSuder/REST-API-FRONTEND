@@ -10,6 +10,7 @@ import { getUsersMinified, UserMinified } from '../../services/userService';
 import * as translation from '../../translation.json';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { useRootStore } from '../../context/context';
+import {AddCategory} from "../../components/Admin/AddCategory";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -120,6 +121,10 @@ export const AdminList: IReactComponent = observer(() => {
 	return(
 		<>
 			<Container>
+				{
+					listType === 'products' &&
+					<AddCategory />
+				}
 				<Grid container spacing={3} className={classes.g}>
 					{
 						list && list.map((el: CompanyInfo | OrderMinified | UserMinified | ProductMinified, i: number) => {
