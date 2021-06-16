@@ -31,7 +31,7 @@ export const ProductList: IReactComponent = observer(({category}: {category?: st
 				history.goBack()
 			})
 		}
-	}, [])
+	}, [category])
 	return (
 		<ThemeProvider theme={theme}>
 			<Container>
