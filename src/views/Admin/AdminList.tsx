@@ -52,7 +52,9 @@ export const useStyles = makeStyles((theme: Theme) =>
 			}
 		},
     buttonContainer: {
-      margin: theme.spacing(3)
+    	position: "fixed",
+      right: "5%",
+	    bottom: "5%",
     },
     button: {
       cursor: "pointer"
