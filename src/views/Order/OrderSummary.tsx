@@ -96,7 +96,7 @@ export const OrderSummary: IReactComponent = observer(({order}: {order?: OrderTy
 				setO(d);
 			})
 		}
-	}, [])
+	}, [id, order])
 
 	useEffect(() => {
 		let p = 0;
@@ -168,7 +168,7 @@ export const OrderSummary: IReactComponent = observer(({order}: {order?: OrderTy
 											</Grid>
 										</Grid>
 										<Grid item xs={4}>
-											<SummaryDelivery d={store.cart.deliveryDetails || store.user.user?.deliverDetails} />
+											<SummaryDelivery d={o ? o.delivery : store.cart.deliveryDetails} />
 											{
 												!id && !order &&
                         <Link to="/order/delivery">
